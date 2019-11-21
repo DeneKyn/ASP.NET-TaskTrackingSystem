@@ -26,7 +26,29 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+                <div class="row">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="col badge badge-pill badge-info">
+                            <span style="line-height: 30px;">@User.Identity.Name</span>
+                        </div>
+                        <div class="col">
+                            <form method="post" asp-controller="Account" asp-action="LogOff">
+                                <input class="btn btn-outline-danger" type="submit" value="Выход" />
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col">
+                            <a class="btn btn-outline-success" asp-controller="Account" asp-action="Login">Вход</a>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-info" asp-controller="Account" asp-action="Register">Регистрация</a>
+                        </div>
+                    }
+                    </div>
+                </div>
         </nav>
     </header>
     <div class="container">
