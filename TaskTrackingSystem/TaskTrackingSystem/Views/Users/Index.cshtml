@@ -1,0 +1,44 @@
+﻿@model IEnumerable<TaskTrackingSystem.ViewModels.UsersListViewModel>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<a asp-action="Create">Добавить пользователя</a>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            
+            <th scope="col">UserName</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+            <th scope="col" width="200px"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model)
+        {
+            
+        <tr>
+            
+            <td>@user.UserName</td>
+            <td>@user.UserEmail</td>
+            <td>
+                @foreach (var role in user.UserRoles)
+                {
+                    <span>@role</span>
+                }
+            </td>
+            <td>
+                <form asp-action="Delete" asp-route-id="@user.UserId" method="post">
+                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.UserId">Изменить</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Удалить
+                    </button>
+                </form>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

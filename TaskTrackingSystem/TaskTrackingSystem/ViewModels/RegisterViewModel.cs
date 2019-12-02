@@ -9,12 +9,13 @@ namespace TaskTrackingSystem.ViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
-        [Display(Name = "Год рождения")]
-        public int Year { get; set; }
+        [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

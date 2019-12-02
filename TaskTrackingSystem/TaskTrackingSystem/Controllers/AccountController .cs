@@ -31,7 +31,7 @@ namespace TaskTrackingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
+                User user = new User { Email = model.Email, UserName = model.UserName};
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -80,6 +80,7 @@ namespace TaskTrackingSystem.Controllers
                 return View("Error");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            await _userManager.AddToRoleAsync(user, "user");
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
             else
