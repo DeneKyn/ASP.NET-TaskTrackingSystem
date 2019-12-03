@@ -7,12 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TaskTrackingSystem.Models
 {
-    public class ApplicationContext : IdentityDbContext<User>
-    {
+    public class ApplicationContext : IdentityDbContext<ApplicationUser>
+    {        
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<Project> Projects { get; set; }        
     }
 }

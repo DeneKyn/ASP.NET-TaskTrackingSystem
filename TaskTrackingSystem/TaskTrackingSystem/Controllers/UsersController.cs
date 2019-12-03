@@ -11,10 +11,10 @@ namespace TaskTrackingSystem.Controllers
 {
     public class UsersController : Controller
     {
-        UserManager<User> _userManager;
+        UserManager<ApplicationUser> _userManager;
         RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -24,7 +24,7 @@ namespace TaskTrackingSystem.Controllers
         {
             var users = _userManager.Users.ToList();
             List<UsersListViewModel> model = new List<UsersListViewModel>();
-            foreach (User user in users)
+            foreach (ApplicationUser user in users)
             {
                 if (user != null)
                 {
@@ -49,7 +49,7 @@ namespace TaskTrackingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email};
+                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -68,7 +68,7 @@ namespace TaskTrackingSystem.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {                
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -92,7 +92,7 @@ namespace TaskTrackingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByIdAsync(model.Id);
+                ApplicationUser user = await _userManager.FindByIdAsync(model.Id);
                 if (user != null)
                 {
                     user.Email = model.Email;
@@ -126,7 +126,7 @@ namespace TaskTrackingSystem.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 IdentityResult result = await _userManager.DeleteAsync(user);

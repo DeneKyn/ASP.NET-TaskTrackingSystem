@@ -1,0 +1,10 @@
+﻿@model TaskTrackingSystem.ViewModels.ProjectViewModel;
+
+<a asp-action="Create" asp-route-username="@Model.UserName">Create New Project</a>
+
+<div>
+    @foreach(Project project in Model.Projects)
+    {
+    <div><p>@project.Name</p></div>
+    }
+</div>
