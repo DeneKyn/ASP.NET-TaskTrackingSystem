@@ -8,21 +8,47 @@ using TaskTrackingSystem.Models;
 
 namespace TaskTrackingSystem
 {
-    
-        public class RoleInitializer
+
+    public class RoleInitializer
+    {
+        public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager, ApplicationContext context)
         {
-            public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager)
+
+            if (await roleManager.FindByNameAsync("admin") == null)
             {
-                
-                if (await roleManager.FindByNameAsync("admin") == null)
-                {
-                    await roleManager.CreateAsync(new IdentityRole("admin"));
-                }
-                if (await roleManager.FindByNameAsync("user") == null)
-                {
-                    await roleManager.CreateAsync(new IdentityRole("user"));
-                }                
+                await roleManager.CreateAsync(new IdentityRole("admin"));
             }
+            if (await roleManager.FindByNameAsync("user") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole("user"));
+            }
+
+            Project user1 = new Project { Name = "Name 1 Project 1", Description = "Some info", UserId = "6af18064-b2ce-4d74-b040-4d7a8d9c76bb" };
+            Project user2 = new Project { Name = "Name 2 Project 1", Description = "Some info", UserId = "c9658725-f73c-453e-9a6c-eba88cf10a5d" };
+            context.Projects.Add(user1);
+            context.Projects.Add(user2);
+            context.SaveChanges();
+
+            TaskList lol = new TaskList { Name = "To Do", Project = user1 };
+            TaskList kek = new TaskList { Name = "Done", Project = user1 };
+            TaskList lolkek = new TaskList { Name = "In progress", Project = user2 };
+            context.TaskLists.AddRange(lol, kek, lolkek);
+            context.SaveChanges();
+
+            ProjectTask task1 = new ProjectTask { Name = "Task1", Description = "LolJej", TaskListId = lol.Id };
+            ProjectTask task2 = new ProjectTask { Name = "Task2", Description = "LolJej", TaskListId = lol.Id };
+            ProjectTask task3 = new ProjectTask { Name = "Task3", Description = "LolJej", TaskListId = lol.Id };
+
+            ProjectTask task4 = new ProjectTask { Name = "Task4", Description = "LolJej", TaskListId = kek.Id };
+            ProjectTask task5 = new ProjectTask { Name = "Task5", Description = "LolJej", TaskListId = kek.Id };
+            ProjectTask task6 = new ProjectTask { Name = "Task6", Description = "LolJej", TaskListId = kek.Id };
+
+            ProjectTask task7 = new ProjectTask { Name = "Task7", Description = "LolJej", TaskListId = lolkek.Id };
+            ProjectTask task8 = new ProjectTask { Name = "Task8", Description = "LolJej", TaskListId = lolkek.Id };
+            ProjectTask task9 = new ProjectTask { Name = "Task9", Description = "LolJej", TaskListId = lolkek.Id };
+            context.ProjectTasks.AddRange(task1, task2, task3, task5, task6, task7, task8, task9);
+            context.SaveChanges();
         }
+    }
     
 }

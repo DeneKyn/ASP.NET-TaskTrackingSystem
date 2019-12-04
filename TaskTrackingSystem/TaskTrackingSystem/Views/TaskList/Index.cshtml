@@ -1,0 +1,22 @@
+﻿@model IEnumerable<TaskTrackingSystem.Models.TaskList>;
+@{
+    ViewData["Title"] = "Task List";
+}
+
+<p>Sosi</p>
+
+@foreach (TaskList taskList in Model)
+{
+    <div>
+        @taskList.Name
+
+        <div>
+            @foreach (ProjectTask projectTask in taskList.ProjectTasks)
+            {
+                <p>@projectTask.Name</p>
+            }
+        </div>
+    </div>
+
+    
+}

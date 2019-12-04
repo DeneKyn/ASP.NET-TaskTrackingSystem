@@ -27,7 +27,8 @@ namespace TaskTrackingSystem
                 {
                     
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await RoleInitializer.InitializeAsync(rolesManager);
+                    var db = services.GetRequiredService<ApplicationContext>();
+                    await RoleInitializer.InitializeAsync(rolesManager, db);
                 }
                 catch (Exception ex)
                 {

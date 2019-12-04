@@ -1,0 +1,13 @@
+﻿@model TaskTrackingSystem.ViewModels.ProjectViewModel;
+
+
+<a asp-action="Create" asp-route-username="@Model.UserName">Create New Project</a>
+
+<div>
+    @foreach (var project in Model.Projects.Select((value,i) => new {i, value}))    
+    {
+        <a asp-controller="TaskList" asp-action="Index" asp-route-id="@project.i" asp-route-name="@Model.UserName">
+            <div class="border border-dark rounded-pill"><p>@project.value.Name</p></div>            
+        </a>
+    }
+</div>

@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 
 namespace TaskTrackingSystem.Models
 {
-   
-    public class Project
+    public class ProjectTask
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
+        public int Id { get; set; }       
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public List<TaskList> TaskLists { get; set; }
+        public int TaskListId { get; set; }
+        public TaskList TaskList { get; set; }
     }
 }
