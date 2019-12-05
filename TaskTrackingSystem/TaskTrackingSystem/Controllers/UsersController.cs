@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.Models;
 using TaskTrackingSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskTrackingSystem.Controllers
 {
+    
     public class UsersController : Controller
     {
         UserManager<ApplicationUser> _userManager;
@@ -20,30 +22,36 @@ namespace TaskTrackingSystem.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> Index()
         {
-            var users = _userManager.Users.ToList();
-            List<UsersListViewModel> model = new List<UsersListViewModel>();
-            foreach (ApplicationUser user in users)
-            {
-                if (user != null)
+            
+                var users = _userManager.Users.ToList();
+                List<UsersListViewModel> model = new List<UsersListViewModel>();
+                foreach (ApplicationUser user in users)
                 {
-                    // получем список ролей пользователя
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    model.Add(new UsersListViewModel
+                    if (user != null)
                     {
-                        UserId = user.Id,
-                        UserEmail = user.Email,
-                        UserName = user.UserName,
-                        UserRoles = userRoles
-                    });
-                }                
-            }
-            return View(model);            
+                        // получем список ролей пользователя
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        model.Add(new UsersListViewModel
+                        {
+                            UserId = user.Id,
+                            UserEmail = user.Email,
+                            UserName = user.UserName,
+                            UserRoles = userRoles
+                        });
+                    }
+                }
+                return View(model);
+            
+            
         }
 
+        
         public IActionResult Create() => View();
 
+        
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
@@ -66,6 +74,7 @@ namespace TaskTrackingSystem.Controllers
             return View(model);
         }
 
+        
         public async Task<IActionResult> Edit(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
@@ -87,6 +96,7 @@ namespace TaskTrackingSystem.Controllers
             return NotFound();
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> Edit(EditUserViewModel model, List<string> roles)
         {

@@ -25,13 +25,19 @@ namespace TaskTrackingSystem
 
             ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
             ApplicationUser user2 = new ApplicationUser { Email = "AlexGuber@gmail.com", UserName = "Alex", EmailConfirmed = true };
-            await userManager.CreateAsync(user1, "Qwerty@228");
+            var result = await userManager.CreateAsync(user1, "Qwerty@228");
             await userManager.CreateAsync(user2, "Qwerty@228");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user1, "admin");
+            }
 
             Project project1 = new Project { Name = "Name 1 Project 1", Description = "Some info", UserId = user1.Id };
             Project project2 = new Project { Name = "Name 2 Project 1", Description = "Some info", UserId = user2.Id };
+            Project project3 = new Project { Name = "My Project LolKek", Description = "Some info", UserId = user1.Id, Status = ProjecrStatus.Private };
             context.Projects.Add(project1);
             context.Projects.Add(project2);
+            context.Projects.Add(project3);
             context.SaveChanges();
 
             TaskList lol = new TaskList { Name = "To Do", Project = project1 };

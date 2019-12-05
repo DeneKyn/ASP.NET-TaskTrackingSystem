@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TaskTrackingSystem.Models;
+using System.Web;
 
 namespace TaskTrackingSystem.Controllers
 {
@@ -12,11 +14,15 @@ namespace TaskTrackingSystem.Controllers
     {
         private ApplicationContext db;
         UserManager<ApplicationUser> _userManager;
+        string CurrentUserName;
         public TaskListController( ApplicationContext context, UserManager<ApplicationUser> userManager)
         {
             db = context;
             _userManager = userManager;
-        }       
+            CurrentUserName = User.Identity.Name;
+        }
+
+        [Authorize(Policy = "admin")]
         public async Task<IActionResult> Index(int id, string name)
         {
             

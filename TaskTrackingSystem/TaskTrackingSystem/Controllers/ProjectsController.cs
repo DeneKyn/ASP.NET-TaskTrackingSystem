@@ -43,22 +43,20 @@ namespace TaskTrackingSystem.Controllers
             
         }
 
-        public async Task<ActionResult> Create(string username)
-        {
-            ApplicationUser user = await _userManager.FindByNameAsync(username);
-            ViewBag.Username = username;
+        public async Task<ActionResult> Create()
+        {            
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Project project, string username)
+        public async Task<ActionResult> Create(Project project)
         {
-            ApplicationUser user = await _userManager.FindByNameAsync(username);
+            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             project.UserId = user.Id;      
             db.Projects.Add(project);            
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Project", new { username = username});
+            return RedirectToAction("Index", "Project", new { username = user.UserName});
             
         }
     }
