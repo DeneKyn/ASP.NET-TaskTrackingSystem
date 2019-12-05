@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using TaskTrackingSystem.Models;
-using System.Web;
 
 namespace TaskTrackingSystem.Controllers
 {
@@ -14,29 +10,60 @@ namespace TaskTrackingSystem.Controllers
     {
         private ApplicationContext db;
         UserManager<ApplicationUser> _userManager;
-        string CurrentUserName;
-        public TaskListController( ApplicationContext context, UserManager<ApplicationUser> userManager)
+        private int CurrentTaskListId; 
+        
+        public TaskListController(ApplicationContext context, UserManager<ApplicationUser> userManager)
         {
             db = context;
             _userManager = userManager;
-            CurrentUserName = User.Identity.Name;
+            CurrentTaskListId = -1;
+
         }
 
-        [Authorize(Policy = "admin")]
+
+        public ActionResult Create(int id)
+        {
+            ViewBag.ProjectId = id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(TaskList taskList, int id)
+        {
+            if (!ModelState.IsValid)
+                return View(taskList);
+            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            taskList.Project = 
+                db.Projects.Where(p => p.UserId == user.Id).ToList()        
+                .FirstOrDefault(p => p.Id == id); 
+
+            db.TaskLists.Add(new TaskList { Name = taskList.Name, Project = taskList.Project });
+            db.SaveChanges();
+            return RedirectToAction("Index", "TaskList");
+
+        }
+
         public async Task<IActionResult> Index(int id, string name)
         {
-            
+
             ApplicationUser user = new ApplicationUser();
             if (name == null)
                 name = User.Identity.Name;
 
             user = await _userManager.FindByNameAsync(name);
             var Projects = db.Projects.Where(p => p.UserId == user.Id);
-            var prpject = (Projects.ToList())[id];           
+            var prpject = (Projects.ToList())[id];
+            if (prpject.Status == ProjecrStatus.Private & name != User.Identity.Name)
+            {
+                return Content("Acced Denied");
+            }
 
-
+            CurrentTaskListId = prpject.Id;            
+            ViewData["Message"] = prpject.Name;
+            ViewBag.ProjectId = prpject.Id;
             var temp = (db.TaskLists.Where(p => p.ProjectId == prpject.Id)).ToList();
-            foreach(TaskList taskList in temp)
+            foreach (TaskList taskList in temp)
             {
                 var kek = db.ProjectTasks.Where(p => p.TaskListId == taskList.Id);
                 taskList.ProjectTasks = kek.ToList();

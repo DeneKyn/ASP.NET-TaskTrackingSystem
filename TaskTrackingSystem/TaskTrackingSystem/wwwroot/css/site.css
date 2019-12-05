@@ -290,3 +290,22 @@ ul.ks-cboxtags {
     height: 4px;
     top: calc(50% - 2px);
 }
+
+.task-list {
+    min-width: 355px;
+    max-width: 355px;
+    border-width: 1px !important;
+    border-radius: 6px !important;
+    background-color: #eff1f3;
+}
+
+.task-list__header {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    border-bottom: 1px solid #adadad;
+}
+
+.task-add-button {
+    margin-left: auto;
+}

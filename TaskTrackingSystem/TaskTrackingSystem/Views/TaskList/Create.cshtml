@@ -1,0 +1,15 @@
+﻿@model TaskTrackingSystem.Models.TaskList;
+
+<form asp-antiforgery="true" asp-action="Create" asp-controller="TaskList">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Project name</label>
+        <input type="text" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>        
+    </div>
+
+
+    <div class="form-group">
+        <input asp-route-id="@ViewBag.ProjectId" type="submit" value="Send" class="btn btn-default" />
+    </div>
+</form>

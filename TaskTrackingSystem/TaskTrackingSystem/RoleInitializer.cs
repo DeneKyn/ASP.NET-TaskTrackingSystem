@@ -23,7 +23,7 @@ namespace TaskTrackingSystem
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
 
-            ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
+            /*ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
             ApplicationUser user2 = new ApplicationUser { Email = "AlexGuber@gmail.com", UserName = "Alex", EmailConfirmed = true };
             var result = await userManager.CreateAsync(user1, "Qwerty@228");
             await userManager.CreateAsync(user2, "Qwerty@228");
@@ -58,7 +58,7 @@ namespace TaskTrackingSystem
             ProjectTask task8 = new ProjectTask { Name = "Task8", Description = "LolJej", TaskListId = lolkek.Id };
             ProjectTask task9 = new ProjectTask { Name = "Task9", Description = "LolJej", TaskListId = lolkek.Id };
             context.ProjectTasks.AddRange(task1, task2, task3, task5, task6, task7, task8, task9);
-            context.SaveChanges();
+            context.SaveChanges();*/
         }
     }
     

@@ -1,12 +1,27 @@
 ﻿@model TaskTrackingSystem.Models.Project;
 
-<form asp-action="create" asp-controller="project">
+<form asp-antiforgery="true" asp-action="Create" asp-controller="Projects">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div class="form-group">
-        <label asp-for="Name" class="control-label">Название</label>
+        <label asp-for="Name" class="control-label">Project name</label>
         <input type="text" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+        <label asp-for="Description" class="control-label">Project description</label>
+        <input type="text" asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <div>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<ProjecrStatus>()" class="form-control"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
     </div>
-    
+
+
     <div class="form-group">
-        <input type="submit" asp-route-username="@ViewBag.Username" value="Send" class="btn btn-default" />
+        <input type="submit" value="Send" class="btn btn-default" />
     </div>
 </form>
