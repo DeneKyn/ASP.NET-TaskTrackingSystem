@@ -25,10 +25,10 @@ namespace TaskTrackingSystem
                 var services = scope.ServiceProvider;
                 try
                 {
-                    
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var db = services.GetRequiredService<ApplicationContext>();
-                    await RoleInitializer.InitializeAsync(rolesManager, db);
+                    await RoleInitializer.InitializeAsync(userManager, rolesManager, db);
                 }
                 catch (Exception ex)
                 {

@@ -11,7 +11,7 @@ namespace TaskTrackingSystem
 
     public class RoleInitializer
     {
-        public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager, ApplicationContext context)
+        public static async Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext context)
         {
 
             if (await roleManager.FindByNameAsync("admin") == null)
@@ -23,15 +23,20 @@ namespace TaskTrackingSystem
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
 
-            Project user1 = new Project { Name = "Name 1 Project 1", Description = "Some info", UserId = "6af18064-b2ce-4d74-b040-4d7a8d9c76bb" };
-            Project user2 = new Project { Name = "Name 2 Project 1", Description = "Some info", UserId = "c9658725-f73c-453e-9a6c-eba88cf10a5d" };
-            context.Projects.Add(user1);
-            context.Projects.Add(user2);
+            ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
+            ApplicationUser user2 = new ApplicationUser { Email = "AlexGuber@gmail.com", UserName = "Alex", EmailConfirmed = true };
+            await userManager.CreateAsync(user1, "Qwerty@228");
+            await userManager.CreateAsync(user2, "Qwerty@228");
+
+            Project project1 = new Project { Name = "Name 1 Project 1", Description = "Some info", UserId = user1.Id };
+            Project project2 = new Project { Name = "Name 2 Project 1", Description = "Some info", UserId = user2.Id };
+            context.Projects.Add(project1);
+            context.Projects.Add(project2);
             context.SaveChanges();
 
-            TaskList lol = new TaskList { Name = "To Do", Project = user1 };
-            TaskList kek = new TaskList { Name = "Done", Project = user1 };
-            TaskList lolkek = new TaskList { Name = "In progress", Project = user2 };
+            TaskList lol = new TaskList { Name = "To Do", Project = project1 };
+            TaskList kek = new TaskList { Name = "Done", Project = project1 };
+            TaskList lolkek = new TaskList { Name = "In progress", Project = project2 };
             context.TaskLists.AddRange(lol, kek, lolkek);
             context.SaveChanges();
 

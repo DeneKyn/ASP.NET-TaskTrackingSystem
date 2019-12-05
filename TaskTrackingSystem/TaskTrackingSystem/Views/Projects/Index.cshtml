@@ -7,7 +7,14 @@
     @foreach (var project in Model.Projects.Select((value,i) => new {i, value}))    
     {
         <a asp-controller="TaskList" asp-action="Index" asp-route-id="@project.i" asp-route-name="@Model.UserName">
-            <div class="border border-dark rounded-pill"><p>@project.value.Name</p></div>            
+            <div class="border rounded-1 p-3 m-2 d-flex" width="300px">
+                <div class="mr-3">
+                    <p class="text-dark font-weight-bold">@project.value.Name</p>
+                </div>
+                <div>
+                    <p class="text-secondary">@project.value.Description</p>
+                </div>
+            </div>            
         </a>
     }
 </div>
