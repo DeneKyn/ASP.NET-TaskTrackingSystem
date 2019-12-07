@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.Models;
 using TaskTrackingSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using TaskTrackingSystem.Services;
 
 namespace TaskTrackingSystem.Controllers
 {
@@ -15,18 +16,20 @@ namespace TaskTrackingSystem.Controllers
     {
         UserManager<ApplicationUser> _userManager;
         RoleManager<IdentityRole> _roleManager;
+        private readonly IApplicationUser _userService;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IApplicationUser userService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _userService = userService;
         }
 
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Index()
         {
             
-                var users = _userManager.Users.ToList();
+                var users = _userService.GetAll();
                 List<UsersListViewModel> model = new List<UsersListViewModel>();
                 foreach (ApplicationUser user in users)
                 {

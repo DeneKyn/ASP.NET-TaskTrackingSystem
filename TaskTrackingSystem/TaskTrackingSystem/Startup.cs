@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using TaskTrackingSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TaskTrackingSystem.Services;
 
 namespace TaskTrackingSystem
 {
@@ -32,6 +33,7 @@ namespace TaskTrackingSystem
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IApplicationUser, ApplicationUserService>();
             services.AddControllersWithViews();
         }
         
