@@ -3,28 +3,43 @@
     ViewData["Title"] = "Task List";
 }
 
-    <h3 class="mb-4">@ViewData["Message"]</h3>   
-    <a asp-action="Create" asp-route-id="@ViewBag.ProjectId">Add New Colum</a>
-    <div class="d-flex">
-        @foreach (TaskList taskList in Model)
-        {
-            <div class="task-list mr-3">
-                <div class="task-list__header">
-                    <div class="btn btn-outline-secondary">
-                        @taskList.Name <span class="badge badge-light">@taskList.ProjectTasks.Count</span>
-                    </div>
-
-                    <div class="ml-auto">
-                        <button class="border-0"><i class="fas fa-plus-circle"></i></button>
-                    </div>
+<h3 class="mb-4">@ViewData["Message"]</h3>
+<a asp-action="Create" asp-route-id="@ViewBag.ProjectId" data-toggle="modal" class="modal_show">Add New Colum</a>
+<div class="d-flex">
+    @foreach (TaskList taskList in Model)
+    {
+        <div class="task-list mr-3">
+            <div class="task-list__header">
+                <div class="btn btn-outline-secondary">
+                    @taskList.Name <span class="badge badge-light">@taskList.ProjectTasks.Count</span>
+                    <span>id = @taskList.Id</span>
                 </div>
 
-                <div>
-                    @foreach (ProjectTask projectTask in taskList.ProjectTasks)
-                    {
-                        <p>@projectTask.Name</p>
-                    }
+                <div class="ml-auto">
+                    <button class="border-0"><i class="fas fa-plus-circle"></i></button>
                 </div>
             </div>
-        }
+
+            <div>
+                @foreach (ProjectTask projectTask in taskList.ProjectTasks)
+                {
+                    <p>@projectTask.Name</p>
+                    <a asp-controller="Task" asp-action="Index" asp-route-id="1" asp-route-col="1" asp-route-name="DeneKyn">Add New Colum</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+
+<!-- modal placeholder-->
+<div id="myModal" class="modal fade">
+    <div id="MyDialogContent" class="modal-dialog">
+        
     </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/js/ModalWindows.js"></script>
+}

@@ -1,15 +1,27 @@
 ﻿@model TaskTrackingSystem.Models.TaskList;
 
-<form asp-antiforgery="true" asp-action="Create" asp-controller="TaskList">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div class="form-group">
-        <label asp-for="Name" class="control-label">Project name</label>
-        <input type="text" asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>        
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Add a column</h4>
+        <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
     </div>
 
+    <form asp-antiforgery="true" asp-action="Create" asp-controller="TaskList">
 
-    <div class="form-group">
-        <input asp-route-id="@ViewBag.ProjectId" type="submit" value="Send" class="btn btn-default" />
-    </div>
-</form>
+        <div class="modal-body">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Project name</label>
+                <input type="text" asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="modal-footer justify-content-start">
+            <div class="form-group">
+                <input asp-route-id="@ViewBag.ProjectId" type="submit" value="Send" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>

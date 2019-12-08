@@ -309,3 +309,8 @@ ul.ks-cboxtags {
 .task-add-button {
     margin-left: auto;
 }
+
+.transparent_button {
+    border: 0;
+    background: transparent;
+}
