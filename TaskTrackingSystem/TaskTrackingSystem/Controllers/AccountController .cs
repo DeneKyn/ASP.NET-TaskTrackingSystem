@@ -31,7 +31,7 @@ namespace TaskTrackingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.UserName};
+                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.UserName };
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -85,7 +85,7 @@ namespace TaskTrackingSystem.Controllers
                 return RedirectToAction("Index", "Home");
             else
                 return View("Error");
-        }        
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

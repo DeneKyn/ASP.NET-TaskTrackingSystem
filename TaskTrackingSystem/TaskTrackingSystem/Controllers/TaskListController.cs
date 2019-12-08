@@ -24,7 +24,7 @@ namespace TaskTrackingSystem.Controllers
         public ActionResult Create(int id)
         {
             ViewBag.ProjectId = id;
-            return View();
+            return PartialView();
         }
 
         [HttpPost]

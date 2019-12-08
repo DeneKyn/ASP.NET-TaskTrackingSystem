@@ -12,6 +12,9 @@ using TaskTrackingSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json;
 
 namespace TaskTrackingSystem
 {
@@ -34,7 +37,9 @@ namespace TaskTrackingSystem
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IApplicationUser, ApplicationUserService>();
-            services.AddControllersWithViews();
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

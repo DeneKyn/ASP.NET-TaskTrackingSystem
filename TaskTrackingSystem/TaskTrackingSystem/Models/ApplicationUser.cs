@@ -8,6 +8,6 @@ namespace TaskTrackingSystem.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public int Year { get; set; }   // год рождения
+        
     }
 }

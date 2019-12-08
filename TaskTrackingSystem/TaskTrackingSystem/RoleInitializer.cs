@@ -23,7 +23,7 @@ namespace TaskTrackingSystem
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
 
-            /*ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
+           /* ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
             ApplicationUser user2 = new ApplicationUser { Email = "AlexGuber@gmail.com", UserName = "Alex", EmailConfirmed = true };
             var result = await userManager.CreateAsync(user1, "Qwerty@228");
             await userManager.CreateAsync(user2, "Qwerty@228");

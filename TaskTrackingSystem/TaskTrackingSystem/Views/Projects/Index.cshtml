@@ -1,29 +1,44 @@
 ﻿@model TaskTrackingSystem.ViewModels.ProjectViewModel;
+@{
+    ViewData["Title"] = "Creare new Project";
+}
 
 @if (Model.UserName == User.Identity.Name)
 {
-<a asp-action="Create">Create New Project</a>
+    <a asp-action="Create" asp-route-namae="@Model.UserName" data-toggle="modal" class="modal_show">Create New Project</a>
 }
 
 <div>
     @foreach (var project in Model.Projects.Select((value, i) => new { i, value }))
     {
-       @if ((project.value.Status == ProjecrStatus.Public) | (project.value.Status == ProjecrStatus.Private & Model.UserName == User.Identity.Name))
-       {
-        <a asp-controller="TaskList" asp-action="Index" asp-route-id="@project.i" asp-route-name="@Model.UserName">
-            <div class="border rounded-1 p-3 m-2 d-flex" width="300px">
-                <div class="mr-3">
-                    <p class="text-dark font-weight-bold">@project.value.Name</p>
-                    @if (project.value.Status == ProjecrStatus.Private)
-                    {
-                        <p>@project.value.Status</p>
-                    }
+        @if ((project.value.Status == ProjecrStatus.Public) | (project.value.Status == ProjecrStatus.Private & Model.UserName == User.Identity.Name))
+        {
+            <a asp-controller="TaskList" asp-action="Index" asp-route-id="@project.i" asp-route-name="@Model.UserName">
+                <div class="border rounded-1 p-3 m-2 d-flex" width="300px">
+                    <div class="mr-3">
+                        <p class="text-dark font-weight-bold">@project.value.Name</p>
+                        @if (project.value.Status == ProjecrStatus.Private)
+                        {
+                            <p>@project.value.Status</p>
+                        }
+                    </div>
+                    <div>
+                        <p class="text-secondary">@project.value.Description</p>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-secondary">@project.value.Description</p>
-                </div>
-            </div>            
-        </a>
+            </a>
         }
-     }
+    }
 </div>
+
+<!-- modal placeholder-->
+<div id="myModal" class="modal fade">
+    <div id="MyDialogContent" class="modal-dialog">
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/js/ModalWindows.js"></script>
+}
