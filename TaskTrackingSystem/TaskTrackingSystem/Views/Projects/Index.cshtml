@@ -5,7 +5,7 @@
 
 @if (Model.UserName == User.Identity.Name)
 {
-    <a asp-action="Create" asp-route-namae="@Model.UserName" data-toggle="modal" class="modal_show">Create New Project</a>
+    <a asp-action="Create" data-toggle="modal" class="modal_show">Create New Project</a>
 }
 
 <div>
@@ -32,8 +32,8 @@
                         <div class="dropdown border-0">
                             <p class="dropdown-toggle lolkek" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></p>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <button class="dropdown-item" type="button">Edit</button>
-                                <button class="dropdown-item" type="button">Delete</button>                                
+                                <a asp-action="Edit" asp-route-id="@project.value.Id" class="dropdown-item" type="button">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@project.value.Id" class="dropdown-item" type="button">Delete</a>                                
                             </div>
                         </div>
                     </div>

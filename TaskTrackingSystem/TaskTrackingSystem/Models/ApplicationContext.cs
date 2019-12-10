@@ -29,7 +29,13 @@ namespace TaskTrackingSystem.Models
                 .WithMany()
                 .HasForeignKey(f => f.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
+            builder.Entity<Project>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

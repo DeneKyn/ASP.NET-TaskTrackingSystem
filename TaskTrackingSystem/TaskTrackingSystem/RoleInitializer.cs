@@ -32,9 +32,9 @@ namespace TaskTrackingSystem
                 await userManager.AddToRoleAsync(user1, "admin");
             }
 
-            Project project1 = new Project { Name = "Name 1 Project 1", Description = "Some info", UserId = user1.Id };
-            Project project2 = new Project { Name = "Name 2 Project 1", Description = "Some info", UserId = user2.Id };
-            Project project3 = new Project { Name = "My Project LolKek", Description = "Some info", UserId = user1.Id, Status = ProjecrStatus.Private };
+            Project project1 = new Project { Name = "Name 1 Project 1", Description = "Some info", User = user1 };
+            Project project2 = new Project { Name = "Name 2 Project 1", Description = "Some info", User = user2 };
+            Project project3 = new Project { Name = "My Project LolKek", Description = "Some info", User = user1, Status = ProjecrStatus.Private };
             context.Projects.Add(project1);
             context.Projects.Add(project2);
             context.Projects.Add(project3);

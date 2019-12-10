@@ -6,43 +6,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using TaskTrackingSystem.ViewModels;
 using TaskTrackingSystem.Models;
+using Microsoft.EntityFrameworkCore;
+using TaskTrackingSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskTrackingSystem.Controllers
 {
     public class ProjectsController : Controller
-    {
-        UserManager<ApplicationUser> _userManager;
-        RoleManager<IdentityRole> _roleManager;        
-        private ApplicationContext db;
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+    {        
+        private IProjectService _project;
+        private IApplicationUser _user;
 
-        public ProjectsController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationContext context)
+
+        public ProjectsController(IApplicationUser user, IProjectService project)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
-            db = context;
+            _project = project;
+            _user = user;
         }
 
-        public async Task<ActionResult> Index(string username)
+        [Authorize]
+        public ActionResult Index(string username)
         {
-            ApplicationUser user = new ApplicationUser();
-            if (username == null)            
-                username = User.Identity.Name;                
-            
-            user = await _userManager.FindByNameAsync(username);
-            var projects = db.Projects.Where(p => p.UserId == user.Id);
+            ApplicationUser user = _user.Get(username);
+            var projects = _project.Get();
+
             ProjectViewModel model = new ProjectViewModel
             {
                 UserId = user.Id,
                 UserEmail = user.Email,
-                UserName = user.UserName,                
+                UserName = user.UserName,
                 Projects = projects.ToList()
 
             };
             return View(model);
-            
         }
 
+        [Authorize]
         public ActionResult Create()
         {            
             return PartialView("Create");
@@ -50,17 +49,25 @@ namespace TaskTrackingSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> Create(Project project)
-        {
+        {          
             if (!ModelState.IsValid)
-                return PartialView(project);
+                return PartialView(project);            
 
-
-            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            project.UserId = user.Id;      
-            db.Projects.Add(project);            
-            db.SaveChanges();            
+            await _project.Create(project);
             return Json(new { success = true });     
         }
+
+        [Authorize]
+        public async Task<ActionResult> Delete(int id)
+        {
+            if (_user.Get().Id != _project.GetById(id).UserId)
+                return View("Error");
+            await _project.Delete(id);
+            return RedirectToAction("Index", "Projects");
+        }
+
+
     }
 }

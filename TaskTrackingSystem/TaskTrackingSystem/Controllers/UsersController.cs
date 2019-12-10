@@ -29,7 +29,7 @@ namespace TaskTrackingSystem.Controllers
         public async Task<ActionResult> Index()
         {
             
-                var users = _userService.GetAll();
+            var users = _userService.GetAll();
                 List<UsersListViewModel> model = new List<UsersListViewModel>();
                 foreach (ApplicationUser user in users)
                 {
