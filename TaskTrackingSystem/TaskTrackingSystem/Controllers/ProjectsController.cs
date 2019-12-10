@@ -55,14 +55,12 @@ namespace TaskTrackingSystem.Controllers
             if (!ModelState.IsValid)
                 return PartialView(project);
 
+
             ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             project.UserId = user.Id;      
             db.Projects.Add(project);            
-            db.SaveChanges();
-
-            //return PartialView("Success");
-            return RedirectToAction("Index", "Project", new { username = user.UserName});
-            
+            db.SaveChanges();            
+            return Json(new { success = true });     
         }
     }
 }

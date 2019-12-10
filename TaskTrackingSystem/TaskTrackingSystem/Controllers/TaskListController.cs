@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskTrackingSystem.Models;
@@ -21,26 +22,28 @@ namespace TaskTrackingSystem.Controllers
         }
 
 
-        public ActionResult Create(int id)
+        public async Task<ActionResult> Create(int id)
         {
-            ViewBag.ProjectId = id;
+            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            Project Project = db.Projects.FirstOrDefault(p => p.Id == id);
+            if (Project.UserId != user.Id)
+                return Content("Acced denied");
+            ViewBag.ProjectId = id;  
             return PartialView();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(TaskList taskList, int id)
         {
+            
             if (!ModelState.IsValid)
-                return View(taskList);
-            ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                return PartialView(taskList);            
 
-            taskList.Project = 
-                db.Projects.Where(p => p.UserId == user.Id).ToList()        
-                .FirstOrDefault(p => p.Id == id); 
-
+            taskList.Project = db.Projects.FirstOrDefault(p => p.Id == id);            
             db.TaskLists.Add(new TaskList { Name = taskList.Name, Project = taskList.Project });
             db.SaveChanges();
-            return RedirectToAction("Index", "TaskList");
+            return Json(new { success = true });
 
         }
 
@@ -65,7 +68,7 @@ namespace TaskTrackingSystem.Controllers
             var temp = (db.TaskLists.Where(p => p.ProjectId == prpject.Id)).ToList();
             foreach (TaskList taskList in temp)
             {
-                var kek = db.ProjectTasks.Where(p => p.TaskListId == taskList.Id);
+                var kek = db.ProjectTasks.Include(x => x.Author).Where(p => p.TaskListId == taskList.Id);                
                 taskList.ProjectTasks = kek.ToList();
             }
             return View(temp);

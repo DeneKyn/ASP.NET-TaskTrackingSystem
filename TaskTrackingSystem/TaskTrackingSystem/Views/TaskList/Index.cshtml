@@ -16,15 +16,25 @@
                 </div>
 
                 <div class="ml-auto">
+                    <a asp-controller="Task" asp-action="Create" asp-route-id="@taskList.Id" data-toggle="modal" class="modal_show">
                     <button class="border-0"><i class="fas fa-plus-circle"></i></button>
+                    </a>
                 </div>
             </div>
 
-            <div>
+            <div class="p-3">
                 @foreach (ProjectTask projectTask in taskList.ProjectTasks)
                 {
-                    <p>@projectTask.Name</p>
-                    <a asp-controller="Task" asp-action="Index" asp-route-id="1" asp-route-col="1" asp-route-name="DeneKyn">Add New Colum</a>
+                <div class="taskform">
+                    <div class="tasktitle">
+                        <a>@projectTask.Name</a>
+                    </div>
+
+                    <div>
+                        <small>created by @projectTask.Author.UserName</small>
+                    </div>
+                </div>
+                    
                 }
             </div>
         </div>
@@ -34,7 +44,7 @@
 
 <!-- modal placeholder-->
 <div id="myModal" class="modal fade">
-    <div id="MyDialogContent" class="modal-dialog">
+    <div id="myModalContent" class="modal-dialog">
         
     </div>
 </div>

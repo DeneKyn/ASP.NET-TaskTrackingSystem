@@ -1,0 +1,35 @@
+﻿@model TaskTrackingSystem.Models.ProjectTask;
+@{
+    ViewData["Title"] = "Create a new task";
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Add a task</h4>
+        <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
+    </div>
+
+    <form asp-antiforgery="true" asp-action="Create" asp-controller="Task">
+
+        <div class="modal-body">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Task name</label>
+                <input type="text" asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Task description</label>
+                <input type="text" asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="modal-footer justify-content-start">
+            <div class="form-group">
+                <input asp-route-id="@ViewBag.TaskListId" type="submit" value="Send" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>

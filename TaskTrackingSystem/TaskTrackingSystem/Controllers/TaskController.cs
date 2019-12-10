@@ -22,6 +22,30 @@ namespace TaskTrackingSystem.Controllers
             CurrentTaskListId = -1;
 
         }
+
+        public async Task<ActionResult> Create(int id)
+        {
+            
+            ViewBag.TaskListId = id;
+            return PartialView();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ProjectTask task, int id)
+        {
+            if (!ModelState.IsValid)
+                return PartialView(task);
+
+            ApplicationUser user = _userManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+            task.TaskList = db.TaskLists.FirstOrDefault(p => p.Id == id);
+            
+            db.ProjectTasks.Add(new ProjectTask { Name = task.Name, Description=task.Description, Author = user, TaskList = task.TaskList });
+            db.SaveChanges();
+            return Json(new { success = true });
+
+        }
         public async Task<IActionResult> IndexAsync(int id, int tl, int proj, string name)
         {
             ApplicationUser user = new ApplicationUser();

@@ -315,3 +315,21 @@ ul.ks-cboxtags {
     border: 0;
     background: transparent;
 }
+
+.nodrop::after {
+    border: 0;
+}
+
+.taskform {
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    border: solid 1px #bdd0e4;
+    padding: 10px;
+}
+
+.tasktitle {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 500;
+}

@@ -24,9 +24,11 @@ function bindForm(dialog) {
                 if (result.success) {
                     $('#myModal').modal('hide');
                     location.reload();
+                    console.log('Привет от Кекса!');
                 } else {
                     $('#myModalContent').html(result);
                     bindForm();
+                    console.log('лолкек');
                 }
             }
         });
