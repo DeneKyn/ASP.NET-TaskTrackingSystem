@@ -2,15 +2,15 @@
 @{
     ViewData["Title"] = "Create new project";
 }
+<form asp-antiforgery="true" asp-action="Create" asp-controller="Projects">
+    <div class="modal-content">
 
-<div class="modal-content">
+        <div class="modal-header">
+            <h4>Add a project</h4>
+            <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
+        </div>
 
-    <div class="modal-header">
-        <h4>Add a project</h4>
-        <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
-    </div>
 
-    <form asp-antiforgery="true" asp-action="Create" asp-controller="Projects">
         <div class="modal-body">
             <div class="validation" asp-validation-summary="ModelOnly"></div>
 
@@ -38,5 +38,6 @@
                 <input type="submit" value="Send" class="btn btn-default" />
             </div>
         </div>
-    </form>
-</div>
+
+    </div>
+</form>
