@@ -11,5 +11,6 @@ namespace TaskTrackingSystem.ViewModels
         public int ProjectId {get;set;}
         public string ProjectName { get; set; }
         public IEnumerable<TaskList> TaskLists { get; set; }
+        public bool isOwner { get; set; }
     }
 }

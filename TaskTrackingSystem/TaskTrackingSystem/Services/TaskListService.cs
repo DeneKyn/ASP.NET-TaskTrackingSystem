@@ -15,6 +15,7 @@ namespace TaskTrackingSystem.Services
         Task Create(TaskList taskList, int ProjectId);
         Task Edit(int id, TaskList taskl);
         Task Delete(int id);
+        bool Cheeck(int id);
 
 
     }
@@ -82,8 +83,11 @@ namespace TaskTrackingSystem.Services
         public bool Cheeck(int id)
         {
             ApplicationUser user = _user.Get();
-            var taskList = GetById(id);            
-            return true;
+            var taskList = GetById(id);
+            var project = _project.GetById(taskList.ProjectId);
+            if (user.Id == project.UserId)            
+                return true;
+            return false;
         }
 
     }

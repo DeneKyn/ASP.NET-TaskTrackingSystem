@@ -26,7 +26,7 @@ namespace TaskTrackingSystem.Controllers
 
         [Authorize]
         public ActionResult Index(string username)
-        {
+        {            
             ApplicationUser user = _user.Get(username);
             var projects = _project.Get();
 

@@ -56,10 +56,11 @@ namespace TaskTrackingSystem.Controllers
 
         public IActionResult Index(int id, string name)
         {
+            
             ApplicationUser user = _user.Get(name);
             var project = _project.Get(name).ToList()[id];
             var tasklists = _tasklist.GetFull(project.Id);
-            TaskListViewModel model = new TaskListViewModel { ProjectId = project.Id, ProjectName = project.Name, TaskLists = tasklists };
+            TaskListViewModel model = new TaskListViewModel { ProjectId = project.Id, ProjectName = project.Name, TaskLists = tasklists, isOwner = _tasklist.Cheeck(tasklists.First().Id) };
 
             return View(model);
         }
@@ -68,12 +69,11 @@ namespace TaskTrackingSystem.Controllers
         public ActionResult Edit(int id)
         {            
             TaskList taskList = _tasklist.GetById(id);
-            /*if (_user.Get().Id == taskList.UserId)
-            {*/
-            //return Json(taskList);
+            if (_tasklist.Cheeck(id))
+            {            
                 return PartialView(taskList);
-            /*}
-            return View("Error");*/
+            }
+            return View("Error");
         }
 
         [HttpPost]
@@ -92,11 +92,11 @@ namespace TaskTrackingSystem.Controllers
         [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
-            //if (_user.Get().Id == _project.GetById(id).UserId)
-            //{
+            if (_tasklist.Cheeck(id))
+            {
                 await _tasklist.Delete(id);
                 return RedirectToAction("Index", "TaskList");
-            //}
+            }
             return View("Error");
         }
     }
