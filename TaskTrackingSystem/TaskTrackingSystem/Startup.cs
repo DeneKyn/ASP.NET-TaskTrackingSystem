@@ -36,8 +36,9 @@ namespace TaskTrackingSystem
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IApplicationUser, ApplicationUserService>();
+            services.AddScoped<IApplicationUser, ApplicationUserService>(); 
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ITaskListService, TaskListService>();
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);

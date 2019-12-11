@@ -12,7 +12,7 @@ namespace TaskTrackingSystem.Models
 
         [Required]
         public string Name { get; set; }
-        public List<ProjectTask> ProjectTasks { get; set; }
+        public IEnumerable<ProjectTask> ProjectTasks { get; set; }
 
         public int ProjectId { get; set; }
         public Project Project { get; set; }

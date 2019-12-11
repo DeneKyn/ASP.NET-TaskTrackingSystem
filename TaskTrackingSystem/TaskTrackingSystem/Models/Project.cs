@@ -28,6 +28,6 @@ namespace TaskTrackingSystem.Models
         [Column(TypeName = "nvarchar(10)")]        
         public ProjecrStatus Status { get; set; }
 
-        public List<TaskList> TaskLists { get; set; }
+        public IEnumerable<TaskList> TaskLists { get; set; }
     }
 }
