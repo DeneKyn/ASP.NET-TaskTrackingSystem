@@ -42,6 +42,30 @@ namespace TaskTrackingSystem.Controllers
         }
 
         [Authorize]
+        public ActionResult Edit(int id)
+        {
+            Project project = _project.GetById(id);
+            if (_user.Get().Id == project.UserId)
+            {
+                return PartialView(project);
+            }
+            return View("Error");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Edit(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                _project.Edit(project.Id, project);
+                return Json(new { success = true });
+            }
+            return PartialView(project);
+        }
+
+        [Authorize]
         public ActionResult Create()
         {            
             return PartialView("Create");
@@ -52,20 +76,23 @@ namespace TaskTrackingSystem.Controllers
         [Authorize]
         public async Task<ActionResult> Create(Project project)
         {          
-            if (!ModelState.IsValid)
-                return PartialView(project);            
-
-            await _project.Create(project);
-            return Json(new { success = true });     
+            if (ModelState.IsValid)
+            {
+                await _project.Create(project);
+                return Json(new { success = true });
+            }
+            return PartialView(project);
         }
 
         [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
-            if (_user.Get().Id != _project.GetById(id).UserId)
-                return View("Error");
-            await _project.Delete(id);
-            return RedirectToAction("Index", "Projects");
+            if (_user.Get().Id == _project.GetById(id).UserId)
+            { 
+                await _project.Delete(id);
+                return RedirectToAction("Index", "Projects");
+            }
+            return View("Error");
         }
 
 

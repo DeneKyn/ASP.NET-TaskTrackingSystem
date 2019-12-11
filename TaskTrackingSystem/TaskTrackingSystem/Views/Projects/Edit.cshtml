@@ -7,7 +7,7 @@
     <div class="modal-content">
 
         <div class="modal-header">
-            <h4>Add a project</h4>
+            <h4>Project edit</h4>            
             <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
         </div>
 
@@ -28,7 +28,7 @@
                     <label asp-for="Status" class="control-label"></label>
                     <div>
                         <select asp-for="Status" asp-items="Html.GetEnumSelectList<ProjecrStatus>()" class="form-control">
-                            <option selected="selected">3</option>
+                            
                         </select>
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>

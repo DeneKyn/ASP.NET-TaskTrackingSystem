@@ -19,6 +19,8 @@ namespace TaskTrackingSystem.Services
         IEnumerable<Project> Get(string username = null);
         Task Create(Project project);
         Task Delete(int id);
+        Task Edit(int id, Project proj);
+
     }
     public class ProjectService : IProjectService
     {
@@ -79,6 +81,16 @@ namespace TaskTrackingSystem.Services
         {
             var forum = GetById(id);
             _context.Remove(forum);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Edit(int id, Project proj)
+        {
+            var project = GetById(id);
+            project.Name = proj.Name;
+            project.Description = proj.Description;
+            project.Status = proj.Status;
+            _context.Projects.Update(project);
             await _context.SaveChangesAsync();
         }
 
