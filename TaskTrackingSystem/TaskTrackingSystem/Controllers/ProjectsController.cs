@@ -24,6 +24,8 @@ namespace TaskTrackingSystem.Controllers
             _user = user;
         }
 
+
+
         [Authorize]
         public ActionResult Index(string username)
         {            

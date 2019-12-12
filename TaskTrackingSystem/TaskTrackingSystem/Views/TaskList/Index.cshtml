@@ -38,7 +38,7 @@
                 {
                     <div class="taskform">
                         <div class="tasktitle">
-                            <a>@projectTask.Name</a>
+                            <a asp-controller="Task" asp-action="Index" asp-route-id="@projectTask.Id" >@projectTask.Name</a>
                         </div>
 
                         <div>

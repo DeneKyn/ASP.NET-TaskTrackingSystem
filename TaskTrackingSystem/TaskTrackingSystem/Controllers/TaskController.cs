@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.Models;
+using TaskTrackingSystem.Services;
 
 namespace TaskTrackingSystem.Controllers
 {
@@ -14,15 +15,24 @@ namespace TaskTrackingSystem.Controllers
         private ApplicationContext db;
         UserManager<ApplicationUser> _userManager;
         private int CurrentTaskListId;
+        private IProjectService _project;
 
-        public TaskController(ApplicationContext context, UserManager<ApplicationUser> userManager)
+        public TaskController(ApplicationContext context, UserManager<ApplicationUser> userManager, IProjectService project)
         {
             db = context;
             _userManager = userManager;
             CurrentTaskListId = -1;
+            _project = project;
 
         }
 
+        public IActionResult Index(int id)
+        {
+            var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
+            //return Json(kek);
+            return View(kek);
+        }
+        
         public async Task<ActionResult> Create(int id)
         {
             
@@ -46,7 +56,7 @@ namespace TaskTrackingSystem.Controllers
             return Json(new { success = true });
 
         }
-        public async Task<IActionResult> IndexAsync(int id, int tl, int proj, string name)
+        /*public async Task<IActionResult> IndexAsync(int id, int tl, int proj, string name)
         {
             ApplicationUser user = new ApplicationUser();
             if (name == null)
@@ -74,6 +84,6 @@ namespace TaskTrackingSystem.Controllers
             
 
             return Json(task);
-        }
+        }*/
     }
 }

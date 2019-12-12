@@ -1,7 +1,21 @@
-﻿
+﻿@model TaskTrackingSystem.Models.ProjectTask;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Task Detail Info";
 }
 
-<h1>Index</h1>
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Task - @Model.Name</h4>
+        <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
+    </div>
+
+    <div class="modal-body">
+        <h3>Description</h3> <button>Edit</button>
+        <div>@Model.Description</div>
+    </div>
+
+    <div class="modal-footer justify-content-start">
+
+    </div>
+</div>
 
