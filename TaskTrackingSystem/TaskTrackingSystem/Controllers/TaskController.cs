@@ -66,16 +66,13 @@ namespace TaskTrackingSystem.Controllers
         [Authorize]
         public async Task<ActionResult> Change(int id)
         {
-            
             var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
             var lol = _tasklist.GetById(kek.TaskListId);
             var lolkek = _project.GetAllById(lol.ProjectId);
-            
-            //return Json(lolkek);
+
             ViewBag.TaskLists = new SelectList(lolkek.TaskLists, "Id", "Name");
-            var model = new ProjectTaskViewModel{ CurrentTask = kek};
-            //return Json(model);
-            return PartialView(model);
+            var model = new ProjectTaskViewModel { CurrentTask = kek, TaskLists = lolkek.TaskLists.ToList() };            
+            return PartialView(model);       
         }
 
         [HttpPost]
@@ -83,8 +80,12 @@ namespace TaskTrackingSystem.Controllers
         [Authorize]
         public async Task<ActionResult> Change(int id, ProjectTaskViewModel model)
         {
-            return Json(new { currentid = id, changeid = model.ChangeId});
-            
+            var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
+            kek.TaskListId = model.ChangeId;
+            db.ProjectTasks.Update(kek);
+            await db.SaveChangesAsync();
+            return Json(new { success = true });
+
         }
     }
 }

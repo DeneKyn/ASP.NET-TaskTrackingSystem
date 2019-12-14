@@ -66,7 +66,7 @@
 
                             <div>
                                 <small>created by @projectTask.Author.UserName</small>
-                                <a asp-controller="Task" asp-action="Change" asp-route-id="@taskList.Id"><p>Change</p></a>
+                                <a asp-controller="Task" asp-action="Change" asp-route-id="@projectTask.Id" class="modal_show"><p>Change</p></a>
                             </div>
                         </div>
                     }
@@ -86,4 +86,4 @@
     @section scripts
 {
         <script type="text/javascript" src="~/js/ModalWindows.js"></script>
-    }
+}

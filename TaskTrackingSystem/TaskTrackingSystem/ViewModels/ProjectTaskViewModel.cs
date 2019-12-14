@@ -8,7 +8,8 @@ namespace TaskTrackingSystem.ViewModels
 {
     public class ProjectTaskViewModel
     {
-        public ProjectTask CurrentTask { get; set; }        
+        public ProjectTask CurrentTask { get; set; }
+        public IEnumerable<TaskList> TaskLists { get; set; }
         public int ChangeId { get; set; }
     }
 }
