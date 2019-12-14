@@ -2,25 +2,47 @@
 @{
     ViewData["Title"] = "Task List";
 }
+@{int ChangeId = 0; }
 
 <h3 class="mb-4">@Model.ProjectName</h3>
-<a asp-action="Create" asp-route-id="@Model.ProjectId" data-toggle="modal" class="modal_show">Add New Colum</a>
-<div class="d-flex">
-    @foreach (TaskList taskList in Model.TaskLists)
-    {
-        <div class="task-list mr-3">
-            <div class="task-list__header">
-                <div class="btn btn-outline-secondary">
-                    @taskList.Name <span class="badge badge-light">@taskList.ProjectTasks.Count()</span>
-                    <span>id = @taskList.Id</span>
-                </div>
+@if (Model.isOwner | Model.isTeam)
+{
+    <a asp-action="Create" asp-route-id="@Model.ProjectId" data-toggle="modal" class="modal_show">Add New Coloum</a>
+}
 
-                <div class="ml-auto">
-                    <a asp-controller="Task" asp-action="Create" asp-route-id="@taskList.Id" data-toggle="modal" class="modal_show">
-                        <button class="border-0"><i class="fas fa-plus-circle"></i></button>
-                    </a>                    
-                        @if (Model.isOwner)
-                        {
+@foreach (UserProject teamuser in Model.Team)
+{
+<div>
+    <sapn>@teamuser.User.UserName</sapn>
+    <a asp-action="DeleteMember" asp-controller="TaskList" asp-route-id="@teamuser.UserId" asp-route-projectId="@teamuser.ProjectId"><i class="fas fa-times"></i></a>
+</div>
+}
+
+<form asp-antiforgery="true" asp-action="AddMember" asp-controller="TaskList" asp-route-id="@Model.ProjectId">
+    <select name="UserName" class="selectpicker" data-live-search="true" data-max-options="3">
+        @foreach (ApplicationUser User in Model.AllUser)
+        {
+            <option>@User.UserName </option>
+            
+        }
+    </select>
+    <input type="submit" value="Отправить" />
+</form>
+    <div class="d-flex">
+        @foreach (TaskList taskList in Model.TaskLists)
+        {
+            <div class="task-list mr-3">
+                <div class="task-list__header">
+                    <div class="btn btn-outline-secondary">
+                        @taskList.Name <span class="badge badge-light">@taskList.ProjectTasks.Count()</span>
+                    </div>
+
+                    @if (Model.isOwner | Model.isTeam)
+                    {
+                        <div class="ml-auto">
+                            <a asp-controller="Task" asp-action="Create" asp-route-id="@taskList.Id" data-toggle="modal" class="modal_show">
+                                <button class="border-0"><i class="fas fa-plus-circle"></i></button>
+                            </a>
                             <div class="dropdown border-0">
                                 <p class="dropdown-toggle lolkek" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></p>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -28,39 +50,40 @@
                                     <a asp-action="Delete" asp-route-id="@taskList.Id" class="dropdown-item" type="button">Delete</a>
                                 </div>
                             </div>
-                        }
 
+
+                        </div>
+                    }
+                </div>
+
+                <div class="p-3">
+                    @foreach (ProjectTask projectTask in taskList.ProjectTasks)
+                    {
+                        <div class="taskform">
+                            <div class="tasktitle">
+                                <a asp-controller="Task" asp-action="Index" asp-route-id="@projectTask.Id">@projectTask.Name</a>
+                            </div>
+
+                            <div>
+                                <small>created by @projectTask.Author.UserName</small>
+                                <a asp-controller="Task" asp-action="Change" asp-route-id="@taskList.Id"><p>Change</p></a>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
-
-            <div class="p-3">
-                @foreach (ProjectTask projectTask in taskList.ProjectTasks)
-                {
-                    <div class="taskform">
-                        <div class="tasktitle">
-                            <a asp-controller="Task" asp-action="Index" asp-route-id="@projectTask.Id" >@projectTask.Name</a>
-                        </div>
-
-                        <div>
-                            <small>created by @projectTask.Author.UserName</small>
-                        </div>
-                    </div>
-
-                }
-            </div>
-        </div>
-    }
-</div>
-
-
-<!-- modal placeholder-->
-<div id="myModal" class="modal fade">
-    <div id="myModalContent" class="modal-dialog">
-
+        }
     </div>
-</div>
 
-@section scripts
+
+    <!-- modal placeholder-->
+    <div id="myModal" class="modal fade">
+        <div id="myModalContent" class="modal-dialog">
+
+        </div>
+    </div>
+
+    @section scripts
 {
-    <script type="text/javascript" src="~/js/ModalWindows.js"></script>
-}
+        <script type="text/javascript" src="~/js/ModalWindows.js"></script>
+    }

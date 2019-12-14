@@ -24,9 +24,16 @@ namespace TaskTrackingSystem
             }
 
             /*ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
-            ApplicationUser user2 = new ApplicationUser { Email = "AlexGuber@gmail.com", UserName = "Alex", EmailConfirmed = true };
+            ApplicationUser user2 = new ApplicationUser { Email = "Kariedox534@gmail.com", UserName = "Kariedox", EmailConfirmed = true };
+            ApplicationUser user3 = new ApplicationUser { Email = "Ushior654@yandex.ru", UserName = "Ushior", EmailConfirmed = true };
+            ApplicationUser user4 = new ApplicationUser { Email = "Ausheland423@mail.ru", UserName = "Ausheland", EmailConfirmed = true };
+            ApplicationUser user5 = new ApplicationUser { Email = "Wyridannn4234@bk.ru", UserName = "Wyridannn", EmailConfirmed = true };
+
             var result = await userManager.CreateAsync(user1, "Qwerty@228");
             await userManager.CreateAsync(user2, "Qwerty@228");
+            await userManager.CreateAsync(user3, "Qwerty@228");
+            await userManager.CreateAsync(user4, "Qwerty@228");
+            await userManager.CreateAsync(user5, "Qwerty@228");
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(user1, "admin");
@@ -40,10 +47,21 @@ namespace TaskTrackingSystem
             context.Projects.Add(project3);
             context.SaveChanges();
 
+            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user2.Id });
+            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user3.Id });
+
+            project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user3.Id });
+            project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user4.Id });
+            project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user5.Id });
+            context.SaveChanges();
+
             TaskList lol = new TaskList { Name = "To Do", Project = project1 };
             TaskList kek = new TaskList { Name = "Done", Project = project1 };
             TaskList lolkek = new TaskList { Name = "In progress", Project = project2 };
-            context.TaskLists.AddRange(lol, kek, lolkek);
+
+            TaskList kek1 = new TaskList { Name = "Done", Project = project3 };
+            TaskList lol1 = new TaskList { Name = "In progress", Project = project3 };
+            context.TaskLists.AddRange(lol, kek, lolkek, kek1, lol1);
             context.SaveChanges();
 
             ProjectTask task1 = new ProjectTask { Name = "Task1", Description = "LolJej", TaskListId = lol.Id, Author = user1 };

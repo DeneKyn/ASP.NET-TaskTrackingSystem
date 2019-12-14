@@ -11,6 +11,11 @@
 <div>
     @foreach (var project in Model.Projects.Select((value, i) => new { i, value }))
     {
+        @foreach (var lol in project.value.UserProjects)
+        {
+            <span>@lol.User.UserName</span>
+        }
+
         @if ((project.value.Status == ProjecrStatus.Public) | (project.value.Status == ProjecrStatus.Private & Model.UserName == User.Identity.Name))
         {
 
@@ -43,6 +48,39 @@
             </div>
 
         }
+    }
+
+    <h4>Team Projects</h4>
+
+    @foreach (var teamproject in Model.TeamProjects.Select(x => x.Project).Select((value, i) => new { i, value }))
+    {
+        <div class="border rounded-1 p-3 m-2 d-flex" width="300px">
+            <div class="mr-3">
+                <a asp-controller="TaskList" asp-action="Index" asp-route-id="@teamproject.i" asp-route-name="@teamproject.value.User.UserName">
+                    <p class="text-dark font-weight-bold">@teamproject.value.Name</p>
+                </a>
+                @if (teamproject.value.Status == ProjecrStatus.Private)
+                {
+                    <p>@teamproject.value.Status</p>
+                }
+            </div>
+            <div>
+                <p class="text-secondary">@teamproject.value.Description</p>
+            </div>
+
+            <div>
+                @if (Model.UserName == User.Identity.Name)
+                {
+                    <div class="dropdown border-0">
+                        <p class="dropdown-toggle lolkek" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></p>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <a asp-action="Edit" asp-route-id="@teamproject.value.Id" class="dropdown-item modal_show" type="button">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@teamproject.value.Id" class="dropdown-item" type="button">Delete</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     }
 </div>
 

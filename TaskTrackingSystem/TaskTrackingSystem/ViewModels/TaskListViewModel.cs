@@ -10,7 +10,10 @@ namespace TaskTrackingSystem.ViewModels
     {
         public int ProjectId {get;set;}
         public string ProjectName { get; set; }
-        public IEnumerable<TaskList> TaskLists { get; set; }
+        public IEnumerable<TaskList> TaskLists { get; set; }        
         public bool isOwner { get; set; }
+        public bool isTeam { get; set; }
+        public IEnumerable<UserProject> Team { get; set; }
+        public IEnumerable<ApplicationUser> AllUser { get; set; }
     }
 }

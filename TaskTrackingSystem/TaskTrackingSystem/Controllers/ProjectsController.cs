@@ -16,30 +16,32 @@ namespace TaskTrackingSystem.Controllers
     {        
         private IProjectService _project;
         private IApplicationUser _user;
+        private ApplicationContext db;
 
-
-        public ProjectsController(IApplicationUser user, IProjectService project)
+        public ProjectsController(IApplicationUser user, IProjectService project, ApplicationContext context)
         {
             _project = project;
             _user = user;
+            db = context;
         }
 
 
 
         [Authorize]
         public ActionResult Index(string username)
-        {            
+        {          
+
             ApplicationUser user = _user.Get(username);
-            var projects = _project.Get();
 
             ProjectViewModel model = new ProjectViewModel
             {
                 UserId = user.Id,
                 UserEmail = user.Email,
                 UserName = user.UserName,
-                Projects = projects.ToList()
-
+                Projects = _project.Get().ToList(),
+                TeamProjects = _project.GetTeamProjects()
             };
+            //return Json(model);
             return View(model);
         }
 
@@ -96,6 +98,8 @@ namespace TaskTrackingSystem.Controllers
             }
             return View("Error");
         }
+
+
 
 
     }

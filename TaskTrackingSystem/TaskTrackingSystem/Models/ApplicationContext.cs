@@ -18,8 +18,7 @@ namespace TaskTrackingSystem.Models
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<TaskList> TaskLists { get; set; }
-        public DbSet<ProjectTask> ProjectTasks { get; set; }
-
+        public DbSet<ProjectTask> ProjectTasks { get; set; }        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);            
@@ -35,6 +34,19 @@ namespace TaskTrackingSystem.Models
                 .WithMany()
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<UserProject>()
+            .HasKey(t => new { t.UserId, t.ProjectId });
+
+            builder.Entity<UserProject>()
+                .HasOne(sc => sc.User)
+                .WithMany(s => s.UserProjects)
+                .HasForeignKey(sc => sc.UserId);
+
+            builder.Entity<UserProject>()
+                .HasOne(sc => sc.Project)
+                .WithMany(c => c.UserProjects)
+                .HasForeignKey(sc => sc.ProjectId);
 
         }
     }

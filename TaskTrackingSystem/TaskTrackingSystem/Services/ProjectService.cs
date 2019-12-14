@@ -20,7 +20,12 @@ namespace TaskTrackingSystem.Services
         Task Create(Project project);
         Task Delete(int id);
         Task Edit(int id, Project proj);
-
+        List<UserProject> GetTeamProjects();
+        bool CheckTeam(int id);
+        bool CheckOwner(string userid);
+        Task AddTeamMember(int id, string UserName);
+        Task DeleteTeamMember(string id, int projectId);
+        Project GetAllById(int id);
     }
     public class ProjectService : IProjectService
     {
@@ -39,12 +44,24 @@ namespace TaskTrackingSystem.Services
                 .FirstOrDefault(p => p.Id == id);
             return project;
         }
+
+        public Project GetAllById(int id)
+        {
+            var project = GetAllFull()
+                .FirstOrDefault(p => p.Id == id);
+            return project;
+        }
         public IEnumerable<Project> GetAllFull()
         {
             var projects = _context.Projects
+                .Include(c => c.UserProjects)
+                    .ThenInclude(sc => sc.User)
+                .Include(c => c.UserProjects)
+                    .ThenInclude(sc => sc.Project)
+                    .ThenInclude(x => x.User)
                 .Include(x => x.TaskLists)
-                .ThenInclude(x => x.ProjectTasks)
-                .ThenInclude(x => x.Author);
+                    .ThenInclude(x => x.ProjectTasks)
+                    .ThenInclude(x => x.Author);
             return projects;
         }        
 
@@ -58,7 +75,12 @@ namespace TaskTrackingSystem.Services
 
         public IEnumerable<Project> GetAll()
         {
-            var projects = _context.Projects;       
+            var projects = _context.Projects
+                .Include(c => c.UserProjects)
+                    .ThenInclude(sc => sc.User)
+                .Include(c => c.UserProjects)
+                    .ThenInclude(sc => sc.Project)
+                    .ThenInclude(x => x.User);
             return projects;
         }
         public IEnumerable<Project> Get(string username = null)
@@ -94,7 +116,55 @@ namespace TaskTrackingSystem.Services
             await _context.SaveChangesAsync();
         }
 
-        
+        public List<UserProject> GetTeamProjects()
+        {
+            ApplicationUser user = _user.Get();
+            var projects = GetAll();
+            var kek = GetAll().Select(x => x.UserProjects);
+            List<UserProject> TeamsProjects = new List<UserProject>();
+            foreach (var lol in kek)            
+                TeamsProjects.AddRange(lol.Where(x => x.UserId == user.Id));
+           
+            return TeamsProjects;
+        }
+        public bool CheckTeam(int id)
+        {
+            var result = GetTeamProjects()
+                .Select(x => x.ProjectId)
+                .ToList()
+                .Contains(id);
+            return result;
+        }
 
+        public bool CheckOwner(string userid)
+        {
+
+            var currentUser = _user.Get();
+            var result = userid == currentUser.Id ? true : false;
+                return result;
+        }
+
+        public async Task AddTeamMember(int id, string UserName)
+        {
+            ApplicationUser user = _user.Get(UserName);
+            Project project = GetById(id);
+
+            project.UserProjects.Add(new UserProject { ProjectId = project.Id, UserId = user.Id });            
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTeamMember(string id, int projectId)
+        {
+            ApplicationUser user = _user.GetById(id);
+            Project project = GetById(projectId);
+
+            if (project != null && user != null)
+            {
+                var userProject = project.UserProjects.FirstOrDefault(sc => sc.UserId == user.Id);
+                project.UserProjects.Remove(userProject);
+                await _context.SaveChangesAsync();
+            }
+            
+        }
     }
 }

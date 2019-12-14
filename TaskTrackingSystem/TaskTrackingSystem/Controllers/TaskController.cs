@@ -6,30 +6,37 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskTrackingSystem.Models;
+using TaskTrackingSystem.ViewModels;
 using TaskTrackingSystem.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TaskTrackingSystem.Controllers
 {
+
     public class TaskController : Controller
     {
         private ApplicationContext db;
         UserManager<ApplicationUser> _userManager;
         private int CurrentTaskListId;
         private IProjectService _project;
+        private ITaskListService _tasklist;
 
-        public TaskController(ApplicationContext context, UserManager<ApplicationUser> userManager, IProjectService project)
+        public TaskController(ApplicationContext context, UserManager<ApplicationUser> userManager, IProjectService project, ITaskListService tasklist)
         {
             db = context;
             _userManager = userManager;
             CurrentTaskListId = -1;
             _project = project;
+            _tasklist = tasklist;
 
         }
 
+        
         public IActionResult Index(int id)
         {
             var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
-            //return Json(kek);
+            
             return View(kek);
         }
         
@@ -54,36 +61,30 @@ namespace TaskTrackingSystem.Controllers
             db.ProjectTasks.Add(new ProjectTask { Name = task.Name, Description=task.Description, Author = user, TaskList = task.TaskList });
             db.SaveChanges();
             return Json(new { success = true });
-
         }
-        /*public async Task<IActionResult> IndexAsync(int id, int tl, int proj, string name)
+
+        [Authorize]
+        public async Task<ActionResult> Change(int id)
         {
-            ApplicationUser user = new ApplicationUser();
-            if (name == null)
-                name = User.Identity.Name;
             
-            user = await _userManager.FindByNameAsync(name);
-
-            var prpject = db.Projects                
-                .Where(p => p.UserId == user.Id)
-                .ToList()[proj];
-
+            var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
+            var lol = _tasklist.GetById(kek.TaskListId);
+            var lolkek = _project.GetAllById(lol.ProjectId);
             
-            if (prpject.Status == ProjecrStatus.Private & name != User.Identity.Name)
-            {
-                return Content("Acced Denied");
-            }
+            //return Json(lolkek);
+            ViewBag.TaskLists = new SelectList(lolkek.TaskLists, "Id", "Name");
+            var model = new ProjectTaskViewModel{ CurrentTask = kek};
+            //return Json(model);
+            return PartialView(model);
+        }
 
-            var tasklist = db.TaskLists
-                .Where(tl => tl.ProjectId == prpject.Id)
-                .ToList()[tl];
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<ActionResult> Change(int id, ProjectTaskViewModel model)
+        {
+            return Json(new { currentid = id, changeid = model.ChangeId});
             
-            var task = db.ProjectTasks
-                .Where(t => t.TaskListId == tasklist.Id)
-                .ToList()[id];            
-            
-
-            return Json(task);
-        }*/
+        }
     }
 }

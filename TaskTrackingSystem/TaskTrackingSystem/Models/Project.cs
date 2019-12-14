@@ -29,5 +29,12 @@ namespace TaskTrackingSystem.Models
         public ProjecrStatus Status { get; set; }
 
         public IEnumerable<TaskList> TaskLists { get; set; }
+
+        public List<UserProject> UserProjects { get; set; }
+
+        public Project()
+        {
+            UserProjects = new List<UserProject>();
+        }
     }
 }

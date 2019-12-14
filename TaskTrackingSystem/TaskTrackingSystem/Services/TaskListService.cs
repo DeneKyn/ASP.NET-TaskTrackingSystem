@@ -15,9 +15,9 @@ namespace TaskTrackingSystem.Services
         Task Create(TaskList taskList, int ProjectId);
         Task Edit(int id, TaskList taskl);
         Task Delete(int id);
-        bool Cheeck(int id);
-
-
+        bool CheckOwner(int id);
+        bool CheckTeam(int id);
+        
     }
     public class TaskListService : ITaskListService
     {
@@ -38,7 +38,7 @@ namespace TaskTrackingSystem.Services
         }
         public IEnumerable<TaskList> GetAllFull()
         {
-            var taskLists = _context.TaskLists            
+            var taskLists = _context.TaskLists
                 .Include(x => x.ProjectTasks)
                 .ThenInclude(x => x.Author);
             return taskLists;
@@ -52,14 +52,15 @@ namespace TaskTrackingSystem.Services
         public TaskList GetById(int id)
         {
             var taskList = GetAll()
+                .DefaultIfEmpty()
                 .FirstOrDefault(p => p.Id == id);
             return taskList;
         }
 
         public async Task Create(TaskList taskList, int ProjectId)
-        {            
-            _context.TaskLists.Add(new TaskList { 
-                Name = taskList.Name, 
+        {
+            _context.TaskLists.Add(new TaskList {
+                Name = taskList.Name,
                 Project = _project.GetById(ProjectId) });
 
             await _context.SaveChangesAsync();
@@ -80,15 +81,27 @@ namespace TaskTrackingSystem.Services
             await _context.SaveChangesAsync();
         }
 
-        public bool Cheeck(int id)
+        public bool CheckOwner(int id)
         {
             ApplicationUser user = _user.Get();
             var taskList = GetById(id);
             var project = _project.GetById(taskList.ProjectId);
-            if (user.Id == project.UserId)            
+            if (user.Id == project.UserId)
                 return true;
             return false;
         }
+
+        public bool CheckTeam(int id)
+        {
+            var taskList = GetById(id);
+            var result = _project.GetTeamProjects()
+                .Select(x => x.ProjectId)
+                .ToList()
+                .Contains(taskList.ProjectId);
+            return result;
+        }
+
+        
 
     }
 }

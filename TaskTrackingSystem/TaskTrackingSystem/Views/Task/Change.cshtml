@@ -1,0 +1,29 @@
+﻿@model TaskTrackingSystem.ViewModels.ProjectTaskViewModel;
+@{
+    ViewData["Title"] = "Change";
+}
+
+<h1>Change</h1>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Add a task</h4>
+        <button data-dismiss="modal" class="transparent_button"><i class="far fa-times-circle"></i></button>
+    </div>
+
+    <form asp-antiforgery="true" asp-action="Change" asp-controller="Task">
+
+        <div class="modal-body">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <select asp-for="ChangeId" asp-items="@ViewBag.TaskLists">                
+            </select>
+            
+        </div>
+
+        <div class="modal-footer justify-content-start">
+            <div class="form-group">
+                <input asp-route-id="@Model.CurrentTask.Id" type="submit" value="Change" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>

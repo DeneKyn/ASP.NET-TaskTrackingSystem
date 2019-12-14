@@ -13,6 +13,8 @@ namespace TaskTrackingSystem.ViewModels
         public string UserName { get; set; }
         public ProjecrStatus Status { get; set; }
         public IEnumerable<Project> Projects { get; set; }
+        public IEnumerable<UserProject> TeamProjects { get; set; }
+
 
     }
 }
