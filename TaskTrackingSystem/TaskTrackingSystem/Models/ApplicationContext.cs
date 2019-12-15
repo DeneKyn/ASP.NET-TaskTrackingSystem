@@ -17,6 +17,8 @@ namespace TaskTrackingSystem.Models
         }
 
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<TaskList> TaskLists { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }        
         protected override void OnModelCreating(ModelBuilder builder)
@@ -30,6 +32,12 @@ namespace TaskTrackingSystem.Models
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Project>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ChatMessage>()
                 .HasOne(c => c.User)
                 .WithMany()
                 .HasForeignKey(f => f.UserId)

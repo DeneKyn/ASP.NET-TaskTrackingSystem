@@ -99,8 +99,21 @@ namespace TaskTrackingSystem.Controllers
             return View("Error");
         }
 
-
-
+        [Authorize] 
+        public async Task<ActionResult> Chat(int id)
+        {            
+            var project = _project.GetById(id);
+            if (_user.Get().Id == project.UserId)
+            {
+                var chat = db.Chats
+                    .Include(x => x.Messages)
+                        .ThenInclude(x => x.User)
+                    .FirstOrDefault(x=> x.ProjectId == id);
+                var chatmessage = db.ChatMessages;                
+                return View(chat);
+            }
+            return View("Error");
+        }
 
     }
 }

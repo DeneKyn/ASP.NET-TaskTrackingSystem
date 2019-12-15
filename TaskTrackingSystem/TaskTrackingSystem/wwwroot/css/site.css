@@ -333,3 +333,8 @@ ul.ks-cboxtags {
     line-height: 1;
     font-weight: 500;
 }
+
+.messagesobx {
+    overflow: auto !important;
+    max-height: 300px;
+}

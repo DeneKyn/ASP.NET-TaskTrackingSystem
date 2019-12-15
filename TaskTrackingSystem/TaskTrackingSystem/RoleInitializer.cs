@@ -23,7 +23,7 @@ namespace TaskTrackingSystem
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
 
-            /*ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
+            ApplicationUser user1 = new ApplicationUser { Email = "denekyn@gmail.com", UserName = "DeneKyn", EmailConfirmed = true };
             ApplicationUser user2 = new ApplicationUser { Email = "Kariedox534@gmail.com", UserName = "Kariedox", EmailConfirmed = true };
             ApplicationUser user3 = new ApplicationUser { Email = "Ushior654@yandex.ru", UserName = "Ushior", EmailConfirmed = true };
             ApplicationUser user4 = new ApplicationUser { Email = "Ausheland423@mail.ru", UserName = "Ausheland", EmailConfirmed = true };
@@ -39,7 +39,7 @@ namespace TaskTrackingSystem
                 await userManager.AddToRoleAsync(user1, "admin");
             }
 
-            Project project1 = new Project { Name = "Name 1 Project 1", Description = "Some info", User = user1 };
+            /*Project project1 = new Project { Name = "Name 1 Project 1", Description = "Some info", User = user1 };
             Project project2 = new Project { Name = "Name 2 Project 1", Description = "Some info", User = user2 };
             Project project3 = new Project { Name = "My Project LolKek", Description = "Some info", User = user1, Status = ProjecrStatus.Private };
             context.Projects.Add(project1);
@@ -47,9 +47,21 @@ namespace TaskTrackingSystem
             context.Projects.Add(project3);
             context.SaveChanges();
 
-            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user2.Id });
-            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user3.Id });
+            context.Chats.Add(new Chat { ProjectId = project1.Id });
+            context.Chats.Add(new Chat { ProjectId = project2.Id });
+            context.Chats.Add(new Chat { ProjectId = project3.Id });
+            context.SaveChanges();
 
+            ChatMessage message1 = new ChatMessage { Text = "message1", UserId = user1.Id, ChatId = 1 };
+            ChatMessage message2 = new ChatMessage { Text = "message2", UserId = user1.Id, ChatId = 1 };
+            ChatMessage message3 = new ChatMessage { Text = "message3", UserId = user1.Id, ChatId = 1 };
+            ChatMessage message4 = new ChatMessage { Text = "message4", UserId = user1.Id, ChatId = 1 };
+            ChatMessage message5 = new ChatMessage { Text = "message5", UserId = user1.Id, ChatId = 1 };
+            context.ChatMessages.AddRange(message1, message2, message3, message4, message5);
+            context.SaveChanges();
+
+            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user2.Id });            
+            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user3.Id });
             project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user3.Id });
             project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user4.Id });
             project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user5.Id });
@@ -77,6 +89,10 @@ namespace TaskTrackingSystem
             ProjectTask task9 = new ProjectTask { Name = "Task9", Description = "LolJej", TaskListId = lolkek.Id, Author = user1 };
             context.ProjectTasks.AddRange(task1, task2, task3, task5, task6, task7, task8, task9);
             context.SaveChanges();*/
+
+
+            
+            
         }
     }
     

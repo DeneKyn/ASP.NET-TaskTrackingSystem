@@ -15,6 +15,8 @@ using TaskTrackingSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
+using TaskTrackingSystem.Hubs;
+
 
 namespace TaskTrackingSystem
 {
@@ -35,13 +37,15 @@ namespace TaskTrackingSystem
             services.AddIdentity<ApplicationUser, IdentityRole>()             
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
-
+            
             services.AddScoped<IApplicationUser, ApplicationUserService>(); 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITaskListService, TaskListService>();
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            services.AddSignalR();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,10 +59,11 @@ namespace TaskTrackingSystem
                 app.UseExceptionHandler("/Home/Error");                
                 app.UseHsts();
             }
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseHttpsRedirection();            
             app.UseAuthorization(); 
             
 
@@ -67,6 +72,11 @@ namespace TaskTrackingSystem
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chat");
             });
         }
     }

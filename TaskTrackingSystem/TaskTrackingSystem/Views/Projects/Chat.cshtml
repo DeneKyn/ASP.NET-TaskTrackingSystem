@@ -1,0 +1,100 @@
+﻿@model TaskTrackingSystem.Models.Chat;
+@{
+    ViewData["Title"] = "Chat";
+}
+
+<h1>@Model.Project.Name</h1>
+
+@if (Model.Messages != null)
+{
+    <div id="messagesobx" class="messagesobx">
+        @foreach (var message in Model.Messages)
+        {
+            <div id="@message.Id" class="m-4 border-bottom-1">
+                <div>
+                    <span>@message.User.UserName</span>
+                </div>
+
+                <div class="ml-2">
+                    <p>@message.Text</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+<form asp-action="Chat" asp-controller="Projects" method="post" asp-route-id="@Model.Id" asp-net>
+    <input hidden name="ChatId" id="ChatId" type="text" value="@Model.Id">
+    <input hidden name="UserName" id="UserName" type="text" value="@User.Identity.Name">    
+    <div class="row">
+        <div class="col-6">
+            <textarea id="messageInput" placeholder="Text"
+                      class="form-control" rows="3" name="messageInput"></textarea>
+
+            <div class="form-group">
+                <input type="submit" value="Send" name="sendButton" class="btn btn-success" id="sendButton" />
+            </div>
+
+        </div>
+    </div>
+</form>
+}
+
+<script src="~/lib/signalr/signalr.min.js"></script>
+<script type="text/javascript">
+    window.onload = () => {
+        let hubUrl = 'https://localhost:44306/chat';
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl(hubUrl)
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        updateMessages = (id, userName, messageText) => {
+            console.log("Один");
+            console.log(id);
+            const container = $('#messagesobx');
+            var result =
+                `<div id="${id}" class="m-4 border-bottom-1">
+                <div>
+                    <span>${userName}</span>
+                </div>
+
+                <div class="ml-2">
+                    <p>${messageText}</p>
+                </div>
+            </div>`;
+
+            container.append(result);
+            $('#messageInput').val('');
+            container.scrollTop(container[0].scrollHeight);
+        };
+
+
+        document.getElementById("sendButton").disabled = true;
+        connection.on("ReceiveMessage", function (id, user, message, chatid) {
+            var currentchat = document.getElementById("id").value;            
+            if (chatid == currentchat) 
+                updateMessages(id, user, message);
+        });
+
+        connection.start().then(function () {
+            document.getElementById("sendButton").disabled = false;
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        document.getElementById("sendButton").addEventListener("click", function (event) {
+            var user = document.getElementById("UserName").value;
+            var message = document.getElementById("messageInput").value;
+            var id = document.getElementById("id").value;
+            console.log("Пока ублюдки");
+            console.log(id);
+            connection.invoke("Send", user, message, id).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+    };
+</script>
