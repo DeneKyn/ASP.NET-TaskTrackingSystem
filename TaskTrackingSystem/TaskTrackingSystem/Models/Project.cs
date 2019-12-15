@@ -10,8 +10,7 @@ namespace TaskTrackingSystem.Models
     public enum ProjecrStatus
     {        
         Public,
-        Private,
-        Team
+        Private        
     }
     public class Project
     {

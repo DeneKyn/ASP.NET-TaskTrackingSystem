@@ -3,8 +3,6 @@
     ViewData["Title"] = "Change";
 }
 
-<h1>Change</h1>
-
 <div class="modal-content">
     <div class="modal-header">
         <h4>Add a task</h4>
@@ -15,7 +13,7 @@
 
         <div class="modal-body">
             <div class="validation" asp-validation-summary="ModelOnly"></div>
-            <select asp-for="ChangeId" asp-items="@ViewBag.TaskLists">                
+            <select asp-for="ChangeId" asp-items="@ViewBag.TaskLists" class="form-control">                
             </select>
             
         </div>

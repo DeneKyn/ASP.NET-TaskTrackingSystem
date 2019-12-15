@@ -338,3 +338,32 @@ ul.ks-cboxtags {
     overflow: auto !important;
     max-height: 300px;
 }
+
+.projectbox {
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin: .5rem;
+    display: flex;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+}
+
+.membercard {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;    
+    padding: 5px 20px;
+    border-radius: 25px;
+    background: #395874;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.tasklistname {
+    font-size: 20px;
+    margin-left: auto;
+    border-bottom: 1px solid #c8bcbcd6;
+    border-radius: 15px;
+    padding: 3px 10px;
+}

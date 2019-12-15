@@ -60,7 +60,7 @@ namespace TaskTrackingSystem
             context.ChatMessages.AddRange(message1, message2, message3, message4, message5);
             context.SaveChanges();
 
-            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user2.Id });            
+            project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user2.Id });
             project1.UserProjects.Add(new UserProject { ProjectId = project1.Id, UserId = user3.Id });
             project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user3.Id });
             project3.UserProjects.Add(new UserProject { ProjectId = project3.Id, UserId = user4.Id });
@@ -91,8 +91,8 @@ namespace TaskTrackingSystem
             context.SaveChanges();*/
 
 
-            
-            
+
+
         }
     }
     

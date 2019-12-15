@@ -5,85 +5,88 @@
 @{int ChangeId = 0; }
 
 <h3 class="mb-4">@Model.ProjectName</h3>
-@if (Model.isOwner | Model.isTeam)
-{
-    <a asp-action="Create" asp-route-id="@Model.ProjectId" data-toggle="modal" class="modal_show">Add New Coloum</a>
-}
 
-@foreach (UserProject teamuser in Model.Team)
-{
-<div>
-    <sapn>@teamuser.User.UserName</sapn>
-    <a asp-action="DeleteMember" asp-controller="TaskList" asp-route-id="@teamuser.UserId" asp-route-projectId="@teamuser.ProjectId"><i class="fas fa-times"></i></a>
+
+<div class="d-inline-block">
+    @foreach (UserProject teamuser in Model.Team)
+    {
+        <div class="membercard">
+            <sapn>@teamuser.User.UserName</sapn>
+            <a asp-action="DeleteMember" asp-controller="TaskList" asp-route-id="@teamuser.UserId" asp-route-projectId="@teamuser.ProjectId"><i class="fas fa-times ml-3"></i></a>
+        </div>
+    }
 </div>
-}
 
-<form asp-antiforgery="true" asp-action="AddMember" asp-controller="TaskList" asp-route-id="@Model.ProjectId">
+<form asp-antiforgery="true" asp-action="AddMember" asp-controller="TaskList" asp-route-id="@Model.ProjectId" class="mb-4">
     <select name="UserName" class="selectpicker" data-live-search="true" data-max-options="3">
         @foreach (ApplicationUser User in Model.AllUser)
         {
             <option>@User.UserName </option>
-            
+
         }
     </select>
-    <input type="submit" value="Отправить" />
+    <input type="submit" value="Add team member" class="btn btn-success" />
 </form>
-    <div class="d-flex">
-        @foreach (TaskList taskList in Model.TaskLists)
-        {
-            <div class="task-list mr-3">
-                <div class="task-list__header">
-                    <div class="btn btn-outline-secondary">
-                        @taskList.Name <span class="badge badge-light">@taskList.ProjectTasks.Count()</span>
-                    </div>
 
-                    @if (Model.isOwner | Model.isTeam)
-                    {
-                        <div class="ml-auto">
-                            <a asp-controller="Task" asp-action="Create" asp-route-id="@taskList.Id" data-toggle="modal" class="modal_show">
-                                <button class="border-0"><i class="fas fa-plus-circle"></i></button>
-                            </a>
-                            <div class="dropdown border-0">
-                                <p class="dropdown-toggle lolkek" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></p>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <a asp-action="Edit" asp-route-id="@taskList.Id" class="dropdown-item modal_show" type="button">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@taskList.Id" class="dropdown-item" type="button">Delete</a>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    }
-                </div>
-
-                <div class="p-3">
-                    @foreach (ProjectTask projectTask in taskList.ProjectTasks)
-                    {
-                        <div class="taskform">
-                            <div class="tasktitle">
-                                <a asp-controller="Task" asp-action="Index" asp-route-id="@projectTask.Id">@projectTask.Name</a>
-                            </div>
-
-                            <div>
-                                <small>created by @projectTask.Author.UserName</small>
-                                <a asp-controller="Task" asp-action="Change" asp-route-id="@projectTask.Id" class="modal_show"><p>Change</p></a>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        }
-    </div>
-
-
-    <!-- modal placeholder-->
-    <div id="myModal" class="modal fade">
-        <div id="myModalContent" class="modal-dialog">
-
-        </div>
-    </div>
-
-    @section scripts
+@if (Model.isOwner | Model.isTeam)
 {
-        <script type="text/javascript" src="~/js/ModalWindows.js"></script>
+    <a asp-action="Create" asp-route-id="@Model.ProjectId" data-toggle="modal" class="modal_show btn btn-primary">Add new list of task</a>
+}
+
+<div class="d-flex">
+    @foreach (TaskList taskList in Model.TaskLists)
+    {
+        <div class="task-list mr-3">
+            <div class="task-list__header">
+                <div class="tasklistname">
+                    @taskList.Name <span class="badge badge-light">@taskList.ProjectTasks.Count()</span>
+                </div>
+
+                @if (Model.isOwner | Model.isTeam)
+                {
+                    <div class="ml-auto">                        
+                        <div class="dropdown border-0">
+                            <p class="dropdown-toggle lolkek" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></p>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <a asp-controller="Task" asp-action="Create" asp-route-id="@taskList.Id" class="dropdown-item modal_show" type="button"><i class="fas fa-plus-circle mr-3"></i>Add</a>
+                                <a asp-action="Edit" asp-route-id="@taskList.Id" class="dropdown-item modal_show" type="button"><i class="fas fa-edit mr-3"></i>Edit</a>
+                                <a asp-action="Delete" asp-route-id="@taskList.Id" class="dropdown-item" type="button"><i class="fas fa-times mr-3"></i>Delete</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+
+            <div class="p-3">
+                @foreach (ProjectTask projectTask in taskList.ProjectTasks)
+                {
+                    <div class="taskform">
+                        <div class="tasktitle">
+                            <a asp-controller="Task" asp-action="Index" asp-route-id="@projectTask.Id">@projectTask.Name</a>
+                        </div>
+
+                        <div>
+                            <small>created by @projectTask.Author.UserName</small>
+                            <a asp-controller="Task" asp-action="Change" asp-route-id="@projectTask.Id" class="modal_show"><p>Change</p></a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+
+<!-- modal placeholder-->
+<div id="myModal" class="modal fade">
+    <div id="myModalContent" class="modal-dialog">
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/js/ModalWindows.js"></script>
 }

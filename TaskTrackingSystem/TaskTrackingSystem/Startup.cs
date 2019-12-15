@@ -16,7 +16,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
 using TaskTrackingSystem.Hubs;
-
+using Microsoft.Extensions.Logging;
+using TaskTrackingSystem.Logger;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace TaskTrackingSystem
 {
@@ -41,6 +44,7 @@ namespace TaskTrackingSystem
             services.AddScoped<IApplicationUser, ApplicationUserService>(); 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITaskListService, TaskListService>();
+            services.AddScoped<ITaskService, TaskService>();
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
@@ -48,8 +52,11 @@ namespace TaskTrackingSystem
             services.AddSignalR();
         }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,6 +84,12 @@ namespace TaskTrackingSystem
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("/chat");
+            });
+
+            app.Run(async (context) =>
+            {
+                logger.LogInformation("Processing request {0}", context.Request.Path);
+                await context.Response.WriteAsync("Hello World!");
             });
         }
     }

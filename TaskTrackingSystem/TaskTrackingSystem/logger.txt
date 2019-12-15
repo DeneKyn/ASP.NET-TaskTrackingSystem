@@ -1,0 +1,92 @@
+Request starting HTTP/2.0 GET https://localhost:44306/  
+Entity Framework Core 3.0.1 initialized 'ApplicationContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0
+Executing endpoint 'TaskTrackingSystem.Controllers.HomeController.Index (TaskTrackingSystem)'
+Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller TaskTrackingSystem.Controllers.HomeController (TaskTrackingSystem).
+Executing ViewResult, running view Index.
+Executed ViewResult - view Index executed in 143.9846ms.
+Executed action TaskTrackingSystem.Controllers.HomeController.Index (TaskTrackingSystem) in 170.6896ms
+Executed endpoint 'TaskTrackingSystem.Controllers.HomeController.Index (TaskTrackingSystem)'
+Request finished in 395.0753ms 200 text/html; charset=utf-8
+Request starting HTTP/2.0 GET https://localhost:44306/favicon.ico  
+Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\denek\source\repos\DeneKyn\ASP.NET-TaskTrackingSystem\TaskTrackingSystem\TaskTrackingSystem\wwwroot\favicon.ico'
+Request finished in 95.5589ms 200 image/x-icon
+Request starting HTTP/2.0 GET https://localhost:44306/Projects  
+Entity Framework Core 3.0.1 initialized 'ApplicationContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: None
+Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+IF EXISTS
+    (SELECT *
+     FROM [sys].[objects] o
+     WHERE [o].[type] = 'U'
+     AND [o].[is_ms_shipped] = 0
+     AND NOT EXISTS (SELECT *
+         FROM [sys].[extended_properties] AS [ep]
+         WHERE [ep].[major_id] = [o].[object_id]
+             AND [ep].[minor_id] = 0
+             AND [ep].[class] = 1
+             AND [ep].[name] = N'microsoft_database_tools_support'
+    )
+)
+SELECT 1 ELSE SELECT 0
+Authorization was successful.
+Executing endpoint 'TaskTrackingSystem.Controllers.ProjectsController.Index (TaskTrackingSystem)'
+Route matched with {action = "Index", controller = "Projects"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index(System.String) on controller TaskTrackingSystem.Controllers.ProjectsController (TaskTrackingSystem).
+Authorization was successful.
+Executing DbCommand [Parameters=[@___httpContextAccessor_HttpContext_User_Identity_Name_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE (([a].[UserName] = @___httpContextAccessor_HttpContext_User_Identity_Name_0) AND ([a].[UserName] IS NOT NULL AND @___httpContextAccessor_HttpContext_User_Identity_Name_0 IS NOT NULL)) OR ([a].[UserName] IS NULL AND @___httpContextAccessor_HttpContext_User_Identity_Name_0 IS NULL)
+Executing DbCommand [Parameters=[@___httpContextAccessor_HttpContext_User_Identity_Name_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE (([a].[UserName] = @___httpContextAccessor_HttpContext_User_Identity_Name_0) AND ([a].[UserName] IS NOT NULL AND @___httpContextAccessor_HttpContext_User_Identity_Name_0 IS NOT NULL)) OR ([a].[UserName] IS NULL AND @___httpContextAccessor_HttpContext_User_Identity_Name_0 IS NULL)
+Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [p].[Id], [p].[Description], [p].[Name], [p].[Status], [p].[UserId], [t].[UserId], [t].[ProjectId], [t].[Id], [t].[AccessFailedCount], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t].[Id0], [t].[Description], [t].[Name], [t].[Status], [t].[UserId0], [t].[Id1], [t].[AccessFailedCount0], [t].[ConcurrencyStamp0], [t].[Email0], [t].[EmailConfirmed0], [t].[LockoutEnabled0], [t].[LockoutEnd0], [t].[NormalizedEmail0], [t].[NormalizedUserName0], [t].[PasswordHash0], [t].[PhoneNumber0], [t].[PhoneNumberConfirmed0], [t].[SecurityStamp0], [t].[TwoFactorEnabled0], [t].[UserName0]
+FROM [Projects] AS [p]
+LEFT JOIN (
+    SELECT [u].[UserId], [u].[ProjectId], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [p0].[Id] AS [Id0], [p0].[Description], [p0].[Name], [p0].[Status], [p0].[UserId] AS [UserId0], [a0].[Id] AS [Id1], [a0].[AccessFailedCount] AS [AccessFailedCount0], [a0].[ConcurrencyStamp] AS [ConcurrencyStamp0], [a0].[Email] AS [Email0], [a0].[EmailConfirmed] AS [EmailConfirmed0], [a0].[LockoutEnabled] AS [LockoutEnabled0], [a0].[LockoutEnd] AS [LockoutEnd0], [a0].[NormalizedEmail] AS [NormalizedEmail0], [a0].[NormalizedUserName] AS [NormalizedUserName0], [a0].[PasswordHash] AS [PasswordHash0], [a0].[PhoneNumber] AS [PhoneNumber0], [a0].[PhoneNumberConfirmed] AS [PhoneNumberConfirmed0], [a0].[SecurityStamp] AS [SecurityStamp0], [a0].[TwoFactorEnabled] AS [TwoFactorEnabled0], [a0].[UserName] AS [UserName0]
+    FROM [UserProject] AS [u]
+    INNER JOIN [AspNetUsers] AS [a] ON [u].[UserId] = [a].[Id]
+    INNER JOIN [Projects] AS [p0] ON [u].[ProjectId] = [p0].[Id]
+    LEFT JOIN [AspNetUsers] AS [a0] ON [p0].[UserId] = [a0].[Id]
+) AS [t] ON [p].[Id] = [t].[ProjectId]
+ORDER BY [p].[Id], [t].[UserId], [t].[ProjectId], [t].[Id], [t].[Id0]
+Executing DbCommand [Parameters=[@___httpContextAccessor_HttpContext_User_Identity_Name_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE (([a].[UserName] = @___httpContextAccessor_HttpContext_User_Identity_Name_0) AND ([a].[UserName] IS NOT NULL AND @___httpContextAccessor_HttpContext_User_Identity_Name_0 IS NOT NULL)) OR ([a].[UserName] IS NULL AND @___httpContextAccessor_HttpContext_User_Identity_Name_0 IS NULL)
+Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT [p].[Id], [p].[Description], [p].[Name], [p].[Status], [p].[UserId], [t].[UserId], [t].[ProjectId], [t].[Id], [t].[AccessFailedCount], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t].[Id0], [t].[Description], [t].[Name], [t].[Status], [t].[UserId0], [t].[Id1], [t].[AccessFailedCount0], [t].[ConcurrencyStamp0], [t].[Email0], [t].[EmailConfirmed0], [t].[LockoutEnabled0], [t].[LockoutEnd0], [t].[NormalizedEmail0], [t].[NormalizedUserName0], [t].[PasswordHash0], [t].[PhoneNumber0], [t].[PhoneNumberConfirmed0], [t].[SecurityStamp0], [t].[TwoFactorEnabled0], [t].[UserName0]
+FROM [Projects] AS [p]
+LEFT JOIN (
+    SELECT [u].[UserId], [u].[ProjectId], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [p0].[Id] AS [Id0], [p0].[Description], [p0].[Name], [p0].[Status], [p0].[UserId] AS [UserId0], [a0].[Id] AS [Id1], [a0].[AccessFailedCount] AS [AccessFailedCount0], [a0].[ConcurrencyStamp] AS [ConcurrencyStamp0], [a0].[Email] AS [Email0], [a0].[EmailConfirmed] AS [EmailConfirmed0], [a0].[LockoutEnabled] AS [LockoutEnabled0], [a0].[LockoutEnd] AS [LockoutEnd0], [a0].[NormalizedEmail] AS [NormalizedEmail0], [a0].[NormalizedUserName] AS [NormalizedUserName0], [a0].[PasswordHash] AS [PasswordHash0], [a0].[PhoneNumber] AS [PhoneNumber0], [a0].[PhoneNumberConfirmed] AS [PhoneNumberConfirmed0], [a0].[SecurityStamp] AS [SecurityStamp0], [a0].[TwoFactorEnabled] AS [TwoFactorEnabled0], [a0].[UserName] AS [UserName0]
+    FROM [UserProject] AS [u]
+    INNER JOIN [AspNetUsers] AS [a] ON [u].[UserId] = [a].[Id]
+    INNER JOIN [Projects] AS [p0] ON [u].[ProjectId] = [p0].[Id]
+    LEFT JOIN [AspNetUsers] AS [a0] ON [p0].[UserId] = [a0].[Id]
+) AS [t] ON [p].[Id] = [t].[ProjectId]
+ORDER BY [p].[Id], [t].[UserId], [t].[ProjectId], [t].[Id], [t].[Id0]
+Executing ViewResult, running view Index.
+Executed ViewResult - view Index executed in 51.1287ms.
+Executed action TaskTrackingSystem.Controllers.ProjectsController.Index (TaskTrackingSystem) in 437.6705ms
+Executed endpoint 'TaskTrackingSystem.Controllers.ProjectsController.Index (TaskTrackingSystem)'
+Request starting HTTP/2.0 GET https://localhost:44306/css/site.css  
+Request finished in 736.4817ms 200 text/html; charset=utf-8
+The file /css/site.css was not modified
+Request finished in 49.9874ms 304 text/css

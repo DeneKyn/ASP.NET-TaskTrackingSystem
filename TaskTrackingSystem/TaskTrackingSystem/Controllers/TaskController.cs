@@ -15,34 +15,29 @@ namespace TaskTrackingSystem.Controllers
 {
 
     public class TaskController : Controller
-    {
-        private ApplicationContext db;
-        UserManager<ApplicationUser> _userManager;
-        private int CurrentTaskListId;
+    {       
         private IProjectService _project;
         private ITaskListService _tasklist;
-
-        public TaskController(ApplicationContext context, UserManager<ApplicationUser> userManager, IProjectService project, ITaskListService tasklist)
+        private ITaskService _task;
+        private IApplicationUser _user;
+        public TaskController(IProjectService project, ITaskListService tasklist, ITaskService task, IApplicationUser user)
         {
-            db = context;
-            _userManager = userManager;
-            CurrentTaskListId = -1;
+                      
             _project = project;
             _tasklist = tasklist;
+            _user = user;
+            _task = task;
 
         }
 
-        
+
         public IActionResult Index(int id)
         {
-            var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
-            
-            return View(kek);
+            return View(_task.GetById(id));
         }
-        
-        public async Task<ActionResult> Create(int id)
+
+        public ActionResult Create(int id)
         {
-            
             ViewBag.TaskListId = id;
             return PartialView();
         }
@@ -51,28 +46,21 @@ namespace TaskTrackingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ProjectTask task, int id)
         {
-            if (!ModelState.IsValid)
-                return PartialView(task);
-
-            ApplicationUser user = _userManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-
-            task.TaskList = db.TaskLists.FirstOrDefault(p => p.Id == id);
-            
-            db.ProjectTasks.Add(new ProjectTask { Name = task.Name, Description=task.Description, Author = user, TaskList = task.TaskList });
-            db.SaveChanges();
-            return Json(new { success = true });
+            if (ModelState.IsValid)
+            {
+                await _task.Create(task, id);
+                return Json(new { success = true });
+            }
+            return PartialView(task);
         }
 
         [Authorize]
         public async Task<ActionResult> Change(int id)
         {
-            var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
-            var lol = _tasklist.GetById(kek.TaskListId);
-            var lolkek = _project.GetAllById(lol.ProjectId);
-
-            ViewBag.TaskLists = new SelectList(lolkek.TaskLists, "Id", "Name");
-            var model = new ProjectTaskViewModel { CurrentTask = kek, TaskLists = lolkek.TaskLists.ToList() };            
-            return PartialView(model);       
+            Project project = _task.GetProject(id);
+            ViewBag.TaskLists = new SelectList(project.TaskLists, "Id", "Name");
+            var model = new ProjectTaskViewModel { CurrentTask = _task.GetById(id), TaskLists = project.TaskLists.ToList() };
+            return PartialView(model);
         }
 
         [HttpPost]
@@ -80,12 +68,8 @@ namespace TaskTrackingSystem.Controllers
         [Authorize]
         public async Task<ActionResult> Change(int id, ProjectTaskViewModel model)
         {
-            var kek = db.ProjectTasks.FirstOrDefault(p => p.Id == id);
-            kek.TaskListId = model.ChangeId;
-            db.ProjectTasks.Update(kek);
-            await db.SaveChangesAsync();
+            await _task.ChangePosition(id, model.ChangeId);            
             return Json(new { success = true });
-
         }
     }
 }
